@@ -20,9 +20,9 @@ class MySQLCon:
             cursor.execute(insert_command , (img_id, name, category, description, address, transport, MRT, latitude, longitude))
             self.conn.commit()
 
-    def tableInsertImg(self , id, image_url):
+    def tableInsertImg(self , img_id, image_url):
    
-        #建立資料庫insert相關命令(table寫死 , 寫入id, image_url)
+        #建立資料庫insert相關命令(table寫死 , 寫入img_id, image_url)
 
         insert_command = "insert into Attr_img(img_id, image_url) Values (%s , %s);" 
         
