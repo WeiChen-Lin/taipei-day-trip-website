@@ -90,12 +90,11 @@ class MySQLCon:
             
             data.append(box)
         
-        #已完成json中data內的所有值建構，開始規劃回傳值需要哪些data，先思考傳入page正確與否，通常會是1先傳進函數
+        #已完成json中data內的所有值建構，開始規劃回傳值需要哪些data，先思考傳入page正確與否
         #搜尋關鍵字所需頁數
         checkPage = ( attr_count - 1 ) // 12
         
-
-        if page < (checkPage - 1):
+        if page < checkPage :
             data_list["nextPage"] = page + 1
         else:
             data_list["nextPage"] = None
@@ -104,7 +103,7 @@ class MySQLCon:
         if attr_count < check_item:
             check_item = attr_count
         
-        data_list["data"] = data[12 * (page - 1) : check_item + 1]
+        data_list["data"] = data[12 * page  : check_item]
 
         return data_list
 
