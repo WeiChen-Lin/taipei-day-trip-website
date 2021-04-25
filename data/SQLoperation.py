@@ -33,10 +33,10 @@ class MySQLCon:
     def getAttraction_withPage(self , page, keyword):
         
         #先確認page正確與否
-        if page <= 0:
+        if page < 0:
             error_json = {}
             error_json["error"] = True
-            error_json["message"] = "頁數請由第一頁開始"
+            error_json["message"] = "頁數請由第零頁開始"
 
             return error_json 
         
@@ -95,16 +95,16 @@ class MySQLCon:
         checkPage = ( attr_count - 1 ) // 12
         
 
-        if page < checkPage:
+        if page < (checkPage - 1):
             data_list["nextPage"] = page + 1
         else:
             data_list["nextPage"] = None
         
-        check_item = 12 * page
+        check_item = 12 * ( page + 1)  
         if attr_count < check_item:
             check_item = attr_count
         
-        data_list["data"] = data[12 * (page - 1) : check_item]
+        data_list["data"] = data[12 * (page - 1) : check_item + 1]
 
         return data_list
 

@@ -38,10 +38,10 @@ def thankyou():
 @app.route("/api/attractions")
 def AttrwithKey():
     page = int(request.args.get("page"))
-    keyword = ""
+    keyword = request.args.get("keyword")
     
-    if keyword:
-        keyword = request.args.get("keyword")
+    if keyword == None:
+        keyword = ""
 	
     to_json = sqlObject.getAttraction_withPage(page , keyword)
 
