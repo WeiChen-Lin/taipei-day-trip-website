@@ -57,11 +57,11 @@ class MySQLCon:
             return error_json 
         
         # 3.從資料庫中拉出符合keyword資料
-        attr_list_command = "select * from Attraction where name like %s"
+        attr_list_command = "select * from Attraction where name like %s limit %s , %s"
         img_list_command =  "select image_url from Attr_img where img_id = %s"
         
         with self.conn.cursor() as cursor:
-            cursor.execute(attr_list_command , (keyword))
+            cursor.execute(attr_list_command , (keyword , page*12 , 12) )
             attr_list = cursor.fetchall()
             
         # 4.開始建構python字典 -> 之後會轉成json格式
@@ -99,11 +99,12 @@ class MySQLCon:
         else:
             data_list["nextPage"] = None
         
-        check_item = 12 * ( page + 1)  
-        if attr_count < check_item:
-            check_item = attr_count
+        data_list["data"] = data
+        #check_item = 12 * ( page + 1)  
+        #if attr_count < check_item:
+        #check_item = attr_count
         
-        data_list["data"] = data[12 * page  : check_item]
+        #data_list["data"] = data[12 * page  : check_item]
 
         return data_list
 
