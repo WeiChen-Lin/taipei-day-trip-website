@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台北一日遊Demo</title>
-    <link rel="stylesheet" href="css/repo_index.css" type="text/css">
-    <script type="text/javascript" src="js/FirstLoad.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/repo_index.css') }} " type="text/css">
+    <script src="{{ url_for('static', filename='js/firstload.js') }}" defer></script>
 </head>
 <body style="margin:0px;" onload="init();">
     <div class="Upperlayer">
@@ -17,22 +17,23 @@
         </div>
     </div>
     <div class="Middlelayer">
-            <img src="css/fig/welcome 1.png" id="welcome">
+            <img src="{{ url_for('static', filename='css/fig/welcome 1.png') }}" id="welcome">
             <div id="title_1">輕鬆享受台北一日悠閒</div>
             <div id="title_2">探索每個角落，體驗城市的深度旅遊行程</div>
             <div class="search">
-                <form action="/api/attractions">
-                    <input type="text" id="view_search" placeholder="輸入景點名稱查詢">
+                <form id="search_box" onsubmit="SearchAttr();">
+                    <input type="text" id="view_search" placeholder="輸入景點名稱查詢" name="input_keyword">
                     <button id="search_icon" type="submit">
-                        <img src="css/fig/icon_search.png">
+                        <img src="{{ url_for('static', filename='css/fig/icon_search.png') }}">
                     </button>
                 </form>
             </div>
     </div>
-
-
+    <div class="loading">
+        <img src="{{ url_for('static', filename='css/fig/loading.png') }}" id ="load_img">
+    </div>
     <div class="footer">
         COPYRIGHT © 2021 台北一日遊
     </div>
-</body> 
+</body>
 </html>
