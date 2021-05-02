@@ -1,11 +1,15 @@
+var nextPage = 0;
+var keyword = "";
+var check_load = null;
+
+
 function createContent(){
     let content = document.createElement("div");
     content.className="content";
-    let content_position = document.getElementsByClassName("footer")[0];
+    let content_position = document.getElementsByClassName("loading")[0];
     body_ele = document.body;
     body_ele.insertBefore(content , content_position);
 };
-
 
 function TextInDiv(div_id , div_text){
     let return_div = document.createElement("div");
@@ -57,9 +61,15 @@ function init(){
             var json = JSON.parse(request.responseText);
             data = json.data;
             createContent();
-            for(let i = 0; i < 12 ; i++){
+            for(let i = 0; i < data.length ; i++){
                 createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category);
             }; 
+            nextPage = json.nextPage;
+            if(nextPage){
+                check_load = 1;
+            }else(
+                check_load = null
+            );
         }else{
             console.log("something wrong");
         };
@@ -67,4 +77,96 @@ function init(){
 
     request.open("get" , requestURL , true);
     request.send();
-};    
+};
+
+function loadPage(nextPage , keyword){
+    if(nextPage != null){
+        var requestURL = "http://52.76.36.230:3000/api/attractions?page=" + nextPage + "&keyword=" + keyword;
+        var request = new XMLHttpRequest();
+
+        request.onload = function () {    
+            if (request.status >= 200 && request.status < 400) {
+                var json = JSON.parse(request.responseText);
+                data = json.data;
+                createContent();
+                for(let i = 0; i < data.length ; i++){
+                    createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category);
+                }; 
+                nextPage = json.nextPage;
+                if(nextPage){
+                    check_load = 1;
+                }else(
+                    check_load = null
+                );
+            }else{
+                console.log("something wrong");
+            };
+        };
+
+        request.open("get" , requestURL , true);
+        request.send();
+    }else{
+        console.log("到底了");
+    }
+};
+
+function loading_image(){
+    let loading_img = document.querySelector("#load_img");
+    loading_img.style.display = "block";
+};
+
+let footer = document.querySelector("div.footer");
+options = {
+    rootMargin:"30px",
+    threshold:[0]
+}
+
+let zxxObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+        if (entry.isIntersecting && check_load == 1) {
+            loadPage(nextPage , keyword);
+            nextPage += 1;    
+        }
+    });
+} , options);
+
+zxxObserver.observe(footer);
+
+
+function getform(){
+    let position = document.querySelector("#search_box");
+    let form = new FormData(position);
+    let obj = {};
+    for (var key of form.keys() ) {
+		obj[key] = form.get(key);
+	}
+	return obj;
+};
+
+function SearchAttr(){
+    let btn = document.querySelector("#search_icon");
+    window.addEventListener("submit" , function(btn){
+        btn.preventDefault();
+    });
+
+    let obj = getform();
+    console.log(obj);
+
+    let old_content = document.getElementsByClassName("content");
+    for(let i = 0 ; i < old_content.length ; i++){
+        document.body.removeChild(old_content[i]);
+    };
+    
+    check_load = null;
+    
+    keyword = obj.input_keyword;
+    loadPage( 0 , keyword);
+    
+    return false;
+};
+
+
+
+
+
+

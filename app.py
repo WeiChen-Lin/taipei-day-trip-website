@@ -10,11 +10,11 @@ config = dotenv_values(".env")
 
 config["port"] = int(config["port"])
 
-#資料庫參數設置
-
 
 sqlObject = MySQLCon(config)
 app=Flask(__name__)
+
+
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
@@ -53,5 +53,5 @@ def AttrwithId(id):
     return json.dumps(sqlObject.fromIdSearchAttr(id) , ensure_ascii=False )
 	
 
-app.run(host="0.0.0.0" , port=3000)
+app.run(port=3000 , debug=True)
 

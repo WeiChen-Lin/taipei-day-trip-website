@@ -233,3 +233,117 @@ body{
     right:10px;
     top:210px;
 }
+
+.loading{
+    width:50px;
+    height:50px;
+    margin: 10px auto;
+    background-color: transparent;
+}
+
+@-webkit-keyframes rotation{
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+.loading img{
+    width:100%;
+    height:100%;
+    display:none;
+    -webkit-transform: rotate(360deg);
+    animation: rotation 3s linear infinite;
+    -moz-animation: rotation 3s linear infinite;
+    -webkit-animation: rotation 3s linear infinite;
+    -o-animation: rotation 3s linear infinite;  
+}
+
+@media (min-width:600px) and (max-width:1200px){
+    .Middlelayer img#welcome{
+        max-width: 280px;
+        right:0;
+        bottom:0;
+    }
+    .content{
+        width:600px;
+    }  
+}
+
+@media (max-width:599px){
+    .content{
+        width:300px;
+    }
+    .title{
+        left:0;
+    }
+    #title_1{
+        width:88.9%;
+        height:41px;
+        left: 5.6%;
+        top: 23.2%;
+    }
+    #title_2{
+        width:88.9%;
+        height:22px;
+        position: absolute;
+        left: 5.6%;
+        top: 43.2%;
+    }
+    .title_left_button{
+        right:0;
+    }
+    .Middlelayer{
+        height: 280px;
+        overflow: hidden;
+    }
+    .search{
+        width:80%;
+        height:46px;
+        left:5.5%;
+        top:60%;
+    }
+    .Middlelayer img#welcome{
+        width:276px;
+        height:148px;
+        top:47.1%;
+        left:41.1%;
+    }
+
+    .search input#view_search{
+        padding-left:4.3%;
+        width:82%;
+        height:46px;
+        top:0px;
+        left:0px;
+        border-radius: 3px;
+        border:none;    
+        font-size: 16px;
+        font-family:Noto Sans TC;
+        
+    }
+    
+    ::-webkit-input-placeholder{
+        position: absolute;
+        width: 92.5%;
+        height: 16px;
+        left: 3.75%;
+        top: 34.7%;
+        margin:0px; 
+        font-family: Noto Sans TC;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 16px;
+        color: #757575;
+    }
+    
+    .search button#search_icon{
+        position:absolute;
+        right:0px;
+        top:0px;
+        width:13%;
+        height:46px;
+        border:transparent;
+        background: #448899;
+    }   
+    
+}
