@@ -20,7 +20,7 @@ function TextInDiv(div_id , div_text){
     return return_div
 };
 
-function createAttrBox(img , attr_name , attr_MRT , attr_category){
+function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
     let attr_box = document.createElement("div");
     attr_box.className = "attr_box";
 
@@ -48,7 +48,11 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category){
     attr_box.appendChild(attr_text);
 
     let content = document.getElementsByClassName("content")[0];
-    content.appendChild(attr_box); 
+    content.appendChild(attr_box);
+    
+    attr_box.addEventListener("click" , () => {
+        window.open("http://127.0.0.1:3000/attraction/"+id);
+    } );
 };
 
 function init(){
@@ -62,7 +66,7 @@ function init(){
             data = json.data;
             createContent();
             for(let i = 0; i < data.length ; i++){
-                createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category);
+                createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category , data[i].id);
             }; 
             nextPage = json.nextPage;
             if(nextPage){
@@ -164,9 +168,5 @@ function SearchAttr(){
     
     return false;
 };
-
-
-
-
 
 

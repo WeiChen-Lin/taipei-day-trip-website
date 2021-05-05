@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>景點介紹</title>
+    <link rel="stylesheet" href="../static/css/repo_attraction.css" type="text/css">
+    <script src="{{ url_for('static', filename='js/attraction.js') }}" defer></script>
+    <!--{{ url_for('static', filename='css/repo_attraction.css') }} -->
+</head>
+<script>
+    const id = {{id}};
+</script>
+<body onload="init();">
+    <div class="Upperlayer">
+        <div class="title">台北一日遊</div>
+        <div class="title_left_button">
+            <button class="title_left_button_style">預定行程</button>
+            <button class="title_left_button_style">登入/註冊</button>
+        </div>
+    </div>
+    <div class="content">
+        <div id ="view">
+            <button class="prev"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showPrev();"></button>
+            <button class="next"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showNext();"></button>
+        </div>
+        <div id ="view_name"></div>
+        <div id = "view_cate"></div>
+        <form class = "view_travel">
+            <div id = "check_title"></div>
+            <div id = "description">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+            <div id = "check_date">選擇日期：<input type="date"></div>
+            <div id = "check_time">選擇時間：
+                <input type="button" id="upperday"  onclick="Price(this);"/><div id ="button_text">上半天</div>
+                <input type="button" id = "downday"  onclick="Price(this);"/><div id ="button_text">下半天</div>
+            </div>
+            <div id = "check_money">導覽費用：</div>
+            <button id = "check_but">開始預訂行程</button>
+        </form>
+    </div>
+    <div class = "view_content">
+        <div id = "text"></div>
+        <div id = "address_box">景點地址：</div>
+        <div id = "address"></div>
+        <div id = "traffic_box">交通方式：</div>
+        <div id = "traffic"></div>
+    </div>
+    <div class="footer">
+        COPYRIGHT © 2021 台北一日遊
+    </div>
+</body>
+</html>
