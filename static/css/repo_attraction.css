@@ -342,3 +342,45 @@ button#check_but{
     margin:auto;
     background: #757575;
 }
+
+@media (max-width:599px){
+    .title{
+        left:0px;
+    }
+    .title_left_button{
+        right:0px;
+    }
+    .content{
+        width:100%;
+        height: 700px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    .content #view, .content #view_name, .content #view_cate, .content{
+        width:100%;
+        position:relative;
+    }
+    .content #view img{
+        overflow:hidden;
+        max-height: 350px;
+    }
+    .view_travel{
+        margin:auto;
+        height:360px;
+        width:340px;
+        position: relative;
+    }
+
+    .view_travel #description{
+        width:300px;
+        line-height: 24px;
+        top:15px;   
+    }
+    .view_content{
+        width:90%;
+        margin-top: 90px;
+    }
+
+}
