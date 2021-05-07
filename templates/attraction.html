@@ -16,19 +16,20 @@
     <div class="Upperlayer">
         <div class="title">台北一日遊</div>
         <div class="title_left_button">
-            <button class="title_left_button_style">預定行程</button>
-            <button class="title_left_button_style">登入/註冊</button>
+            <button id="order">預定行程</button>
+            <button id="signin">登入/註冊</button>
         </div>
     </div>
+
     <div class="content">
-        <div id ="view">
-            <button class="prev"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showPrev();"></button>
-            <button class="next"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showNext();"></button>
+        <div class ="view">
+            <button id="prev"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showPrev();"></button>
+            <button id="next"><img src="{{ url_for('static', filename='css/fig/arrow.png') }}" class = "show" onclick="showNext();"></button>
         </div>
         <div id ="view_name"></div>
         <div id = "view_cate"></div>
         <form class = "view_travel">
-            <div id = "check_title"></div>
+            <div id = "check_title">訂購導覽行程</div>
             <div id = "description">以此景點為中心的一日行程，帶您探索城市角落故事</div>
             <div id = "check_date">選擇日期：<input type="date"></div>
             <div id = "check_time">選擇時間：
@@ -39,6 +40,7 @@
             <button id = "check_but">開始預訂行程</button>
         </form>
     </div>
+    
     <div class = "view_content">
         <div id = "text"></div>
         <div id = "address_box">景點地址：</div>

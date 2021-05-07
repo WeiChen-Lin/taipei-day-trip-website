@@ -66,8 +66,8 @@ function Price(but){
 };
 
 function createImgArea(url){
-    let view = document.querySelector("#view");
-    let prev = document.querySelector(".prev");
+    let view = document.querySelector(".view");
+    let prev = document.querySelector("#prev");
     let img_create = document.createElement("img");
     img_create.src = url;
     img_create.id = "player";
@@ -85,7 +85,7 @@ function createImgBox(img_length){
         Img_select.appendChild(but);
     };
 
-    let view = document.querySelector("#view");
+    let view = document.querySelector(".view");
     view.appendChild(Img_select);
 };
 
