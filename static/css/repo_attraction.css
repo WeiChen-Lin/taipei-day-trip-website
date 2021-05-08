@@ -234,7 +234,7 @@ body{
     margin-top: 20px;
     font-style: normal;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: 16px;
     margin-bottom: 10px;
     color: #666666;
@@ -255,7 +255,7 @@ body{
     font-family: Noto Sans TC;
     font-style: normal;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: 32px;
     color: #666666;
 }
@@ -265,13 +265,13 @@ body{
     font-family: Noto Sans TC;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 23px;
     color: #666666;
 }
 .footer{
-    position:absolute;
-    bottom: 0;
+    position:fixed;
+    bottom:0;
     text-align: center;
     line-height: 74px;
     font-weight:bold;    
@@ -283,6 +283,7 @@ body{
 @media (min-width:1200px){
     .content{
         width:1200px;
+	height:480px;
     }
     .view{
         position: relative;
@@ -302,12 +303,41 @@ body{
         opacity: 0;
     }
 }
-@media (min-width:600px) and (max-width:1200px){
+@media (min-width:801px) and (max-width:1199px){
     html{
-        font-size:12px;
+    	font-size:15px;
+    }
+    .content{
+    	width:95%;
+	height:384px;
+    }
+    .view{
+    	overflow:hidden;
+    }
+    .view #player{
+	max-height:345px;
+    }
+    .footer{
+    	position:relative;
+    }
+}
+@media (min-width:600px) and (max-width:800px){
+    html{
+        font-size:13px;
     }
     .content{
         width:100%;
+	height:380px;
+    }
+    .view{
+        width:45%;
+	height:80%;
+	overflow:hidden;
+    }
+    .view #player{
+	width:100%;
+	height:100%;
+	max-width:405px;
     }
     .view_travel #description{
         width:80%;
@@ -329,6 +359,9 @@ body{
     #check_but{
         width:130px;
         font-size:1.2rem;
+    }
+    .footer{
+        position:relative;
     }
 }
 @media (max-width:599px){
