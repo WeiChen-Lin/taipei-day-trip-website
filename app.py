@@ -10,10 +10,8 @@ config = dotenv_values(".env")
 
 config["port"] = int(config["port"])
 
-
 sqlObject = MySQLCon(config)
-app=Flask(__name__)
-
+app=Flask(__name__) 
 
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -25,7 +23,8 @@ def index():
 
 @app.route("/attraction/<id>")
 def attraction(id):
-    return render_template("attraction.html")
+    
+    return render_template("attraction.html" , id = id)
 
 @app.route("/booking")
 def booking():

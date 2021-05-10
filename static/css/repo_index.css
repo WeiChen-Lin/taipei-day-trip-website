@@ -175,18 +175,24 @@ body{
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
+    cursor:pointer;
 }
-
+.attr_box:hover{
+    border: 3px solid rgb(73, 68, 68);
+    box-shadow:3px 3px 9px rgb(163, 194, 173);
+}
 .attr_img{
-     width:270px;
+    width:270px;
     height:202px;
+    position:absolute;
+    margin:auto;
 }
 
 .attr_img img{
     position:absolute;
     top:0px;
     left:0px;    
-    width:268px;
+    width:270px;
     height:160px;
 }
 
