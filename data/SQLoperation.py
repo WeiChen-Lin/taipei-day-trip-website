@@ -151,3 +151,71 @@ class MySQLCon:
         data_list["data"] = data
 
         return data_list
+
+class User_MySQLCon:
+
+    def __init__(self , config):
+        # 資料庫參數設定
+        self.db_set = config
+
+        # 建立Connection物件
+        self.conn = pymysql.connect(**self.db_set)
+
+    def tableInsertUser(self, email_address, password, username):
+
+        #建立資料庫insert相關命令(table寫死 , 寫入 username、信箱、密碼，並做檢查機制)
+
+        insert_command = ("insert into userfromweb( email_address, password, username)"
+        " Values (%s , %s , %s);" )
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(insert_command , (email_address , password , username) )
+            self.conn.commit()
+
+    def SignUpUserCheck(self, username , email_address):
+
+        check_username_command= "select count(username) FROM userfromweb WHERE username=%s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(check_username_command , (username) )
+            self.conn.commit()
+            username_check = cursor.fetchone()
+
+        check_email_command = "select count(email_address) FROM userfromweb WHERE email_address=%s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(check_email_command , (email_address) )
+            self.conn.commit()
+            email_check = cursor.fetchone()
+
+        return username_check , email_check
+
+    def SignInUserCheck(self, email_address, password):
+
+        check_email_command= "select count(email_address) FROM userfromweb WHERE email_address=%s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(check_email_command , (email_address) )
+            self.conn.commit()
+            email_check = cursor.fetchone()
+
+        check_password_command = "select password from userfromweb where email_address=%s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute( check_password_command , (email_address) )
+            self.conn.commit()
+            password_check = cursor.fetchone()
+
+        return email_check , password_check
+
+    def getUserInfor(self, email_address):
+
+        command = "select id, email_address, username from userfromweb where email_address=%s"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(command , (email_address) )
+            self.conn.commit()
+            Info = cursor.fetchone()
+
+        return Info
+

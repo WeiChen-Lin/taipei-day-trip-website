@@ -51,7 +51,7 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
     content.appendChild(attr_box);
     
     attr_box.addEventListener("click" , () => {
-        window.open("http://127.0.0.1:3000/attraction/"+id);
+        window.open("http://52.76.36.230:3000/attraction/"+id);
     } );
 };
 

@@ -1,3 +1,12 @@
+function getform(position){
+    let form = new FormData(position);
+    let obj = {};
+    for (let key of form.keys() ) {
+		obj[key] = form.get(key);
+	}
+	return obj;
+};
+
 function SignInPage(){
     let sign = document.getElementsByClassName("signbox");
     let background = document.getElementsByClassName("background_layer");

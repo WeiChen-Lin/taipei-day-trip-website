@@ -224,5 +224,5 @@ def User():
     else:
         return {"error":"Invalid Connection"} , 500      
 
-app.run(port=3000 , debug=True)
+app.run(port=3000 , host="0.0.0.0")
 
