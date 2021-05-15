@@ -56,6 +56,8 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
 };
 
 function init(){
+    signCheck();
+
     var requestURL = "http://52.76.36.230:3000/api/attractions?page=0";
     var request = new XMLHttpRequest();
 
@@ -81,7 +83,19 @@ function init(){
 
     request.open("get" , requestURL , true);
     request.send();
+
+    
 };
+
+function Token_verify(){
+    let requestURL = "http://52.76.36.230:3000/api/user";
+    let request = new XMLHttpRequest();
+    request.onload = function(){
+        alert("登入成功!");
+    }
+    request.open("get" , requestURL , true);
+    request.send();
+}
 
 function loadPage(nextPage , keyword){
     if(nextPage != null){
@@ -137,11 +151,10 @@ let zxxObserver = new IntersectionObserver(function (entries) {
 zxxObserver.observe(footer);
 
 
-function getform(){
-    let position = document.querySelector("#search_box");
+function getform(position){
     let form = new FormData(position);
     let obj = {};
-    for (var key of form.keys() ) {
+    for (let key of form.keys() ) {
 		obj[key] = form.get(key);
 	}
 	return obj;
@@ -153,7 +166,8 @@ function SearchAttr(){
         btn.preventDefault();
     });
 
-    let obj = getform();
+    let position = document.querySelector("#search_box");
+    let obj = getform(position);
     console.log(obj);
 
     let old_content = document.getElementsByClassName("content");
