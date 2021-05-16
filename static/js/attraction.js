@@ -8,6 +8,8 @@ function TextIn( region , text){
 };
 
 function init(){
+    signCheck();
+
     var requestURL = "http://52.76.36.230:3000/api/attraction/" + id;
     var request = new XMLHttpRequest();
 
@@ -120,3 +122,4 @@ function showNext(){
     counter++;
     showCurrentImage();
 };
+
