@@ -160,7 +160,7 @@ function getBooking(){
 }
 
 function SendBooking(){
-    let requestURL = "http://52.76.36.230:3000//api/booking";
+    let requestURL = "http://52.76.36.230:3000/api/booking";
     let request = new XMLHttpRequest();
     let data = getBooking();
     if(data){

@@ -231,14 +231,14 @@ class Booking_SQL:
 
     def getImgaeUrl(self, attraction_id):
 
-        image_id_command = "select img_id from attraction where id=%s"
+        image_id_command = "select img_id from Attraction where id=%s"
 
         with self.conn.cursor() as cursor:
             cursor.execute(image_id_command , (attraction_id) )
             self.conn.commit()
             img_id = cursor.fetchone()
         
-        image_url_command = "select image_url from attr_img where img_id = %s limit 1"
+        image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
 
         with self.conn.cursor() as cursor:
             cursor.execute(image_url_command , (img_id[0]) )
@@ -250,10 +250,10 @@ class Booking_SQL:
     def getBooking(self, user_id):
         
         #user_id, 景點id, 景點名稱, 景點地址, 預定日期, 預定時間, 預定價錢
-        command = ("select userfromweb.id, attraction.id, attraction.name, attraction.address, booking.date, booking.time, booking.price"
+        command = ("select userfromweb.id, Attraction.id, Attraction.name, Attraction.address, booking.date, booking.time, booking.price"
         " from booking" 
         " left join userfromweb on booking.user_id = userfromweb.id" 
-        " left join attraction on booking.attraction_id = attraction.id"
+        " left join Attraction on booking.attraction_id = Attraction.id"
         " where booking.user_id=%s;")
         
         with self.conn.cursor() as cursor:
