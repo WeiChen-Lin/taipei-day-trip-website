@@ -309,15 +309,17 @@ body{
     display: flex;
     align-items: center;
 }
-.view_travel #check_time input{ 
+.priceSelectdefault{ 
     width:18px;
     height:18px;  
     border-radius: 10px;
     background:white ;
     border:2px white double;
-
 }
-.view_travel #check_time input:focus{
+.priceSelectclick{
+    width:18px;
+    height:18px;  
+    border-radius: 10px;
     background-color: #448899;
     border:2px white double;
 }
@@ -351,6 +353,10 @@ body{
     border-radius: 5px;
     border:transparent;
 }
+#check_but:hover{
+    cursor: pointer;
+    box-shadow:0 0 5px 5px #ccc;
+}
 .view_content{
     width:62.5%;
     display: flex;
@@ -359,6 +365,7 @@ body{
     margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
+    
 }
 .view_content #text{
     width:100%;
@@ -400,7 +407,7 @@ body{
 }
 .view_content #traffic{
     width:100%;
-    margin-bottom: 10px;
+    margin-bottom: 200px;
     font-family: Noto Sans TC;
     font-style: normal;
     font-weight: normal;
@@ -409,7 +416,7 @@ body{
     color: #666666;
 }
 .footer{
-    position:fixed;
+    position: fixed;
     bottom:0;
     text-align: center;
     line-height: 74px;
@@ -422,11 +429,7 @@ body{
 @media (min-width:1200px){
     .content{
         width:1200px;
-<<<<<<< HEAD
-	height:480px;
-=======
         height:480px;
->>>>>>> b895dfaf59b2944c769ac55fa77ab56fe5d0ec49
     }
     .view{
         position: relative;
@@ -446,7 +449,7 @@ body{
         opacity: 0;
     }
 }
-@media (min-width:801px) and (max-width:1199px){
+@media (min-width:801px) and (max-width:1199px){ㄏ
     html{
     	font-size:15px;
     }

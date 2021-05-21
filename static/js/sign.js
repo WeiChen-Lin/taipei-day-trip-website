@@ -118,6 +118,7 @@ function signOut(){
             button.appendChild(text);
             button.removeEventListener("click", signOut, true);
             button.addEventListener("click", SignInPage, true);
+            window.location = window.location;
         };
     };
     request.open("DELETE" , requestURL , true);
@@ -127,7 +128,7 @@ function signOut(){
 
 function signCheck(){
 
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "http://127.0.0.1:3000/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){
@@ -147,3 +148,32 @@ function signCheck(){
     request.setRequestHeader('content-type', 'application/json');
     request.send();
 }
+
+function BookingPage(){
+    let but = document.querySelector("#order");
+    
+    but.addEventListener("click", () => {
+        let requestURL = "http://52.76.36.230:3000/api/user";
+        let request = new XMLHttpRequest();
+        request.onload = function(){
+            if (request.status >= 200){
+                let json = JSON.parse(request.responseText);
+                if(json.data){
+                    
+                    window.open("http://52.76.36.230:3000/booking");
+
+                }else if(json.data == null){
+                    
+                    alert("請先登入");
+                    
+                    return false;
+                }
+            };
+        };
+        request.open("GET" , requestURL , true);
+        request.setRequestHeader('content-type', 'application/json');
+        request.send();
+    })
+};
+
+

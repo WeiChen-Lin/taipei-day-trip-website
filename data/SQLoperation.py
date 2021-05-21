@@ -100,17 +100,12 @@ class MySQLCon:
             data_list["nextPage"] = None
         
         data_list["data"] = data
-        #check_item = 12 * ( page + 1)  
-        #if attr_count < check_item:
-        #check_item = attr_count
-        
-        #data_list["data"] = data[12 * page  : check_item]
 
         return data_list
 
     def fromIdSearchAttr(self , img_id):
 
-        
+        img_id_command = "select img_id from Attraction where id= %s"
         command = "select * from Attraction where img_id = %s"
         img_list_command =  "select image_url from Attr_img where img_id = %s"
 
@@ -125,7 +120,6 @@ class MySQLCon:
             return error
 
         data_list = {}  
-        data = []
         box = {}
         box_img = []
         box["id"] = attr[1]
@@ -146,9 +140,7 @@ class MySQLCon:
         
         box["images"] = box_img
         
-        data.append(box)
-
-        data_list["data"] = data
+        data_list["data"] = box
 
         return data_list
 
@@ -219,3 +211,90 @@ class User_MySQLCon:
 
         return Info
 
+class Booking_SQL:
+
+    def __init__(self , config):
+        # 資料庫參數設定
+        self.db_set = config
+
+        # 建立Connection物件
+        self.conn = pymysql.connect(**self.db_set)
+
+    def tableInsertBooking(self, user_id, attraction_id, date, time, price):
+
+        insert_command = ("insert into booking ( user_id, attraction_id, date, time, price)"
+        " Values (%s , %s , %s, %s , %s);" )
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(insert_command , ( user_id, attraction_id, date, time, price) )
+            self.conn.commit()
+
+    def getImgaeUrl(self, attraction_id):
+
+        image_id_command = "select img_id from attraction where id=%s"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(image_id_command , (attraction_id) )
+            self.conn.commit()
+            img_id = cursor.fetchone()
+        
+        image_url_command = "select image_url from attr_img where img_id = %s limit 1"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(image_url_command , (img_id[0]) )
+            self.conn.commit()
+            img_url = cursor.fetchone()
+        
+        return img_url
+        
+    def getBooking(self, user_id):
+        
+        #user_id, 景點id, 景點名稱, 景點地址, 預定日期, 預定時間, 預定價錢
+        command = ("select userfromweb.id, attraction.id, attraction.name, attraction.address, booking.date, booking.time, booking.price"
+        " from booking" 
+        " left join userfromweb on booking.user_id = userfromweb.id" 
+        " left join attraction on booking.attraction_id = attraction.id"
+        " where booking.user_id=%s;")
+        
+        with self.conn.cursor() as cursor:
+            cursor.execute(command , (user_id) )
+            self.conn.commit()
+            data = cursor.fetchall()
+            
+
+        schedule_list = []
+        return_data = {}
+        if data:
+
+            for sql in data:
+
+                attraction = {}
+                attraction["id"] = sql[1]
+                attraction["name"] = sql[2]
+                attraction["address"] = sql[3]
+                attraction["image"] = self.getImgaeUrl(sql[1])[0]
+
+                schedule = {}
+                schedule["attraction"] = attraction
+                schedule["date"] = sql[4]
+                schedule["time"] = sql[5]
+                schedule["price"] = sql[6]
+                schedule_list.append(schedule)
+
+            return_data["data"] = schedule_list
+
+            return return_data
+        
+        else:
+            return_data["data"] = None
+
+            return return_data
+        
+    def deleteBooking(self, user_id, attraction_id, date, time):
+
+        command = "delete from booking where user_id=%s and attraction_id=%s and date=%s and time=%s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(command , (user_id, attraction_id, date, time) )
+            self.conn.commit()
+           

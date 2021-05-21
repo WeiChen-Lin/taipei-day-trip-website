@@ -2,7 +2,7 @@ from flask import *
 import sys , json, jwt, datetime
 sys.path.append("./data")
 
-from SQLoperation import MySQLCon, User_MySQLCon
+from SQLoperation import MySQLCon, User_MySQLCon, Booking_SQL
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -19,6 +19,7 @@ sqlConfig = {
 
 sqlObject = MySQLCon(sqlConfig)
 UsersqlObject = User_MySQLCon(sqlConfig)
+bookingsqlObject = Booking_SQL(sqlConfig)
 app=Flask(__name__) 
 
 app.config["JSON_AS_ASCII"]=False
@@ -38,6 +39,7 @@ def attraction(id):
 
 @app.route("/booking")
 def booking():
+
     return render_template("booking.html")
 
 @app.route("/thankyou")
@@ -223,6 +225,113 @@ def User():
     #最後錯誤連線方法
     else:
         return {"error":"Invalid Connection"} , 500      
+
+@app.route("/api/booking", methods=["POST", "GET", "DELETE"] )
+def OperBooking():
+    
+    #建立新行程
+    if request.method == 'POST':
+
+        cookie = request.cookies.get("token")
+        
+        if not cookie:
+            
+            response = make_response( jsonify({"error":True, "message":"未登入系統"}) , 403)
+                
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+        
+        userinfo = jwt.decode(cookie, app.config["SECRET_KEY"] , algorithms=['HS256'])
+        userID = UsersqlObject.getUserInfor(userinfo["email"])[0]
+        data = request.get_json()
+
+        attractionID = int(data["attractionId"])
+        date = data["date"]
+        time = data["time"]
+        price = data["price"]
+        time_check = ["Morning" , "Afternoon"]
+        price_check = [2000 , 2500]
+
+        if ( attractionID not in range(320) ) or ( time not in time_check ) or (price not in price_check):
+
+            response = make_response( jsonify({"error":True, "message":"格式不符合預期"}) , 400) 
+
+            response.headers["Content-Type"] = "application/json"
+
+            return response
+
+        bookingsqlObject.tableInsertBooking(userID, attractionID, date, time, price)
+
+        response = make_response( jsonify({"ok":True}) , 200)         
+        
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
+
+    #根據使用者ID查詢行程訊息
+    elif request.method == "GET":
+        
+        cookie = request.cookies.get("token")
+        
+        if not cookie:
+
+            response = make_response( jsonify({"error":True, "message":"未登入系統"}) , 403)
+                
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+        userinfo = jwt.decode(cookie, app.config["SECRET_KEY"] , algorithms=['HS256'])
+        
+        userID = UsersqlObject.getUserInfor(userinfo["email"])[0]
+        
+        booking_info = bookingsqlObject.getBooking(userID)
+
+        response = make_response( jsonify(booking_info) , 200)
+                
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
+
+    #使用者刪除行程
+    elif request.method == "DELETE":
+
+        cookie = request.cookies.get("token")
+        
+        if not cookie:
+
+            response = make_response( jsonify({"error":True, "message":"未登入系統"}) , 403)
+                
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+        userinfo = jwt.decode(cookie, app.config["SECRET_KEY"] , algorithms=['HS256'])
+        
+        user_id = UsersqlObject.getUserInfor(userinfo["email"])[0]
+
+        data = request.get_json()
+        
+        attraction_id = data["attraction_id"]
+        date = data["date"] 
+        time = data["time"]
+
+        bookingsqlObject.deleteBooking(user_id, attraction_id, date, time)
+        
+        response = make_response( jsonify({"ok":True}) , 200)
+                
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
+    
+    #其他問題
+    else: 
+        response = make_response( jsonify({"error":True, "message":"伺服器錯誤"}) , 500)
+                
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
 
 app.run(port=3000 , host="0.0.0.0")
 

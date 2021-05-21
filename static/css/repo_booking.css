@@ -1,0 +1,428 @@
+body{
+    font-family: Noto Sans TC;
+    padding:0;
+    margin:0;
+}
+.background_layer{
+    background-color: rgba(226, 226, 226, 0.836);
+    z-index: 10;
+    position: absolute;
+    display: none;
+    top: 0;
+    left:0;
+    width:100%;
+    height:100%;
+    opacity: 0.7;
+}
+.signbox{
+    z-index: 11;
+    display: none;
+    background-color:white;
+    position:fixed;
+    top:15px;
+    width:340px;
+    height:275px;
+    left:50%;
+    transform: translate(-170px,0);
+    border:1px solid white;
+    box-shadow:0px 0px 10px gray;
+    border-radius: 10px;
+}
+.sign_upper{
+    margin: 0px;
+    padding: 0px;
+    width:100%;
+    height:15px;
+    background-color:lightblue;
+    border-radius: 10px;
+    position: absolute;
+    box-shadow:0px 0px 10px rgb(245, 242, 242);
+    top: -5px;
+}
+#close_window{
+    width:24px;
+    height:24px;
+    position: absolute;
+    top:20px;
+    right:12px;
+    z-index:12;
+}
+#close_window:hover{
+    cursor: pointer;
+}
+.signform{
+    width: 100%;
+    height:260px;
+    position:absolute;
+    top:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.sign_title{
+    font-size: 1.6rem;
+    width:310px;
+    height:27px;
+    text-align: center;
+    color:#666666;
+}
+.emailbox{
+    width:310px;
+    height:47px;
+    border-radius: 5px;
+}
+.passwordbox{   
+    width:310px;
+    height:47px;
+    border-radius: 5px;
+}
+.signbut{
+    width:310px;
+    height:47px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.6rem;
+    color:white;
+    background-color:#448899;
+    border:none;
+    font-weight: bold;
+}
+.notification{
+    width:310px;
+    height:22px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+::-webkit-input-placeholder{
+    position: absolute;
+    width: 92.5%;
+    height: 16px;
+    left: 3.75%;
+    top: 34.7%;
+    margin:0px; 
+    font-family: Noto Sans TC;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 16px;
+    color: #5a5959;
+}
+.signupbox{
+    z-index: 11;
+    display: none;
+    background-color:white;
+    position:fixed;
+    top:15px;
+    width:340px;
+    height:340px;
+    left:50%;
+    transform: translate(-170px,0);
+    border:1px solid white;
+    box-shadow:0px 0px 10px gray;
+    border-radius: 10px;
+}
+.signupform{
+    width: 100%;
+    height:320px;
+    position:absolute;
+    top:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.username{
+    width:310px;
+    height:47px;
+    border-radius: 5px;
+}
+.Upperlayer{
+    width:100%;
+    height:54px;
+    background-color: #FFFFFF;
+    border-bottom:1px solid #CCC;
+}
+.Upperlayer .title{
+    height:34px;
+    position: absolute;
+    left:18.75%;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 34px;
+    margin:10px 0;
+    color: rgba(68, 136, 153, 1);
+}
+.Upperlayer .title_left_button{
+    height: 54px;
+    position:absolute;
+    right:18.75%;
+    display: flex;
+}
+.title_left_button button#order, .title_left_button button#signin{
+    font-size:1rem;
+    height: 34px;
+    border-style: none;
+    background-color: white;
+    margin:10px 
+}
+.title_left_button button#order:hover, .title_left_button button#signin:hover{
+    cursor: pointer;
+    box-shadow:0 0 5px 5px #ccc;
+}
+.ordertitle{
+    display: flex;
+    font-size: 1.2rem;
+    line-height: 16px;
+    font-weight: 700;  
+    margin-left:24%;
+    margin-top:34px;
+    vertical-align: left;
+    color:rgba(102, 102, 102, 1);
+    width:50%;
+}
+.Norder{
+    font-size: 1.2rem;
+    line-height: 16px;
+    font-weight: 400;  
+    margin-left:24%;
+    margin-top:34px;
+    vertical-align: left;
+    color:rgba(102, 102, 102, 1);
+    width:50%;
+    display: none;
+}
+.orderbox{
+    margin-left:25%;
+    margin-top:35px;
+    width:55%;
+    border-radius: 20px;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+}
+.deleteOrder{
+    width:30px;
+    height:30px;
+    flex:none;
+    position: absolute;
+    top:0px;
+    right:0px;
+}
+.deleteOrder:hover{
+    cursor:pointer;
+}
+.orderimg{
+    overflow: hidden;
+    width:266px;
+    height:200px;
+    border-radius: 20px;
+}
+.orderinfo{
+    margin-left:22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    height:200px;
+}
+#title{
+    font-weight:bold;
+    font-size:1.3rem;
+    line-height:1.3rem;
+    color:#448899;
+}
+#info{
+    font-weight: 700;
+    font-size:1.2rem;
+    line-height: 1.2rem;
+    color:rgba(102, 102, 102, 1);
+
+}
+#detail{
+    font-size:1rem;
+    color:#666666;
+    line-height: 1rem;
+    font-weight: normal;
+}
+.payinfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left:24%;
+    margin-top:30px;
+    font-size:1rem;
+    color:#666666;
+    height:200px;
+    width:50%;
+    line-height: 38px;
+}
+.inputbox{
+    height:38px;
+    width:62.5;
+}
+.warning{
+    font-size:1rem;
+    line-height: 1rem;
+    font-weight: 700;
+}
+.pay{
+    height:800px;
+    position: relative;
+    display: none;
+}
+.inputbox input#payinfo{
+    border:1px solid #E8E8E8;
+    width:200px;
+    height:38px;
+    border-radius: 5px;
+}
+.Price{
+    position: absolute;
+    right:10%;
+    width:50%;
+    font-size:1rem;
+    line-height: 16px;
+    font-weight: 700;
+    margin-top:20px;
+    text-align: right;
+}
+.paybut{
+    width:230px;
+    height:47px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 1.6rem;
+    color:white;
+    background-color:#448899;
+    border:none;
+    position:absolute;
+    right:10%;
+    bottom:13%;
+}
+.footer{
+    text-align: center;
+    line-height: 74px;
+    font-weight:bold;    
+    width: 100%;
+    height: 74px;
+    background: #757575;
+}
+@media (min-width:1200px){
+    .ordertitle{
+        width:900px;
+        margin-left:20%;
+    }
+    .orderbox{
+        width:900px;
+        margin-left:18%;
+    }
+    .Norder{
+        width:900px;
+        margin-left:20%;
+    }
+}
+@media (min-width:801px) and (max-width:1199px){
+    .ordertitle{
+        width:80%;
+        margin-top:30px;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .orderbox{
+        width:80%;
+        margin-top:30px;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .Norder{
+        width:80%;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .warning{
+        line-height: 1.2rem;
+    }
+}
+@media (min-width:600px) and (max-width:800px){
+    .ordertitle{
+        width:80%;
+        margin-top:30px;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .orderbox{
+        width:80%;
+        margin-top:30px;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .Norder{
+        width:80%;
+        margin-left:auto;
+        margin-right: auto;
+    }
+    .warning{
+        line-height: 1.2rem;
+    }
+}
+@media (max-width:599px){
+    html{
+        font-size: 15px;
+    }
+    .Upperlayer .title{
+        position: absolute;
+        left:2%;
+    }
+    .Upperlayer .title_left_button{
+        position: absolute;
+        right:2%;
+    }
+    .ordertitle{
+        font-size: 1rem;
+        margin-left:5%;
+        width: 90%;
+    }
+    .orderbox{
+        margin-left:2.5%;
+        margin-top:35px;
+        width:90%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .Norder{
+        width:90%;
+        margin-left:5%;
+    }
+    .orderimg{
+        width:100%;
+    }
+    .orderinfo{
+        margin-left:0;
+        margin-right: auto;
+        margin-top:20px;
+        height:200px;
+    }
+    .deleteOrder{
+        position: absolute;
+        top: 213px;
+        right:0px;
+    }
+    .payinfo{
+        margin-left:5%;
+        margin-top:30px;
+        width:90%;
+    }
+    .warning{
+        line-height:1.2rem;
+    }
+    .paybut{
+        width:150px;
+        height:27px;
+        font-size: 0.9rem;
+        bottom:17%;
+    }
+}

@@ -51,13 +51,13 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
     content.appendChild(attr_box);
     
     attr_box.addEventListener("click" , () => {
-        window.open("http://52.76.36.230:3000/attraction/"+id);
+        window.open("http://52.76.36.230:3000/attraction/"+ id);
     } );
 };
 
 function init(){
     signCheck();
-
+    BookingPage();
     var requestURL = "http://52.76.36.230:3000/api/attractions?page=0";
     var request = new XMLHttpRequest();
 
@@ -108,7 +108,7 @@ function loadPage(nextPage , keyword){
                 data = json.data;
                 createContent();
                 for(let i = 0; i < data.length ; i++){
-                    createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category);
+                    createAttrBox(data[i].images[0] , data[i].name , data[i].mrt , data[i].category, data[i].id);
                 }; 
                 nextPage = json.nextPage;
                 if(nextPage){
