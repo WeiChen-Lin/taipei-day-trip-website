@@ -57,13 +57,13 @@
         <form class = "view_travel">
             <div id = "check_title">訂購導覽行程</div>
             <div id = "description">以此景點為中心的一日行程，帶您探索城市角落故事</div>
-            <div id = "check_date">選擇日期：<input type="date"></div>
+            <div id = "check_date">選擇日期：<input type="date" name="date"></div>
             <div id = "check_time">選擇時間：
-                <input type="button" id="upperday"  onclick="Price(this);"/><div id ="button_text">上半天</div>
-                <input type="button" id = "downday"  onclick="Price(this);"/><div id ="button_text">下半天</div>
+                <input type="button" id="upperday" class="priceSelectdefault" onclick="Price(this);"/><div id ="button_text">上半天</div>
+                <input type="button" id = "downday" class="priceSelectdefault" onclick="Price(this);"/><div id ="button_text">下半天</div>
             </div>
-            <div id = "check_money">導覽費用：</div>
-            <button id = "check_but">開始預訂行程</button>
+            <div id = "check_money" name="price">導覽費用：</div>
+            <button id = "check_but" type="button" onclick="SendBooking();">開始預訂行程</button>
         </form>
     </div>
     <div class = "view_content">

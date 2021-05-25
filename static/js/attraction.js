@@ -1,6 +1,6 @@
-var counter = 0;
-var img_list;
-var img_length = 0;
+let counter = 0;
+let img_list;
+let img_length = 0;
 
 function TextIn( region , text){
     let input_text = document.createTextNode(text);
@@ -9,6 +9,7 @@ function TextIn( region , text){
 
 function init(){
     signCheck();
+    BookingPage();
 
     var requestURL = "http://52.76.36.230:3000/api/attraction/" + id;
     var request = new XMLHttpRequest();
@@ -18,7 +19,7 @@ function init(){
         if (request.status >= 200 && request.status < 400) {
         
             let json = JSON.parse(request.responseText);
-            data = json.data[0];
+            data = json.data;
             let view_name = document.querySelector("#view_name");
             let view_cate = document.querySelector("#view_cate");
             let view_text = document.querySelector("#text");
@@ -47,7 +48,10 @@ function Price(but){
     let price_bar = document.querySelector("#check_money");
     let span_region = document.createElement("span");
     span_region.id = "money";
-    
+
+    let input_not_selected = document.querySelectorAll("#check_time input");
+    input_not_selected.forEach(ele => ele.classList.remove("priceSelectclick"));
+
     if(but.id == "upperday"){
         let span_check = document.querySelector("#money"); 
         if(span_check){
@@ -56,6 +60,7 @@ function Price(but){
         price_bar.appendChild(span_region);
         let money = document.createTextNode("新臺幣2000元");
         span_region.appendChild(money);
+        but.classList.add("priceSelectclick")
     }else{
         let span_check = document.querySelector("#money"); 
         if(span_check){
@@ -64,6 +69,7 @@ function Price(but){
         price_bar.appendChild(span_region);
         let money = document.createTextNode("新臺幣2500元");
         span_region.appendChild(money);
+        but.classList.add("priceSelectclick")
     }
 };
 
@@ -122,4 +128,55 @@ function showNext(){
     counter++;
     showCurrentImage();
 };
+
+function getBooking(){
+    let return_data = {}
+    let price = document.querySelector("#money");
+    let date = document.querySelector("#check_date > input[type=date]");
+    return_data.attractionId = id;
+    
+    if(date.value){
+        return_data.date = date.value;
+    }else if(date.value == ""){
+        alert("貼心提醒，日期及時段都要選擇方便服務人員確認喔");
+        return false;
+    }
+
+    if(price){
+        if(price.textContent == "新臺幣2000元"){
+            return_data.time = "Morning"
+            return_data.price = 2000;
+        }else if(price.textContent == "新臺幣2500元"){
+            return_data.time = "Afternoon";
+            return_data.price = 2500;
+        }
+    }else if(price == null){
+        alert("貼心提醒，日期及時段都要選擇方便服務人員確認喔OuO");
+        return false;
+    }
+
+    return return_data;
+    
+}
+
+function SendBooking(){
+    let requestURL = "http://52.76.36.230:3000/api/booking";
+    let request = new XMLHttpRequest();
+    let data = getBooking();
+    if(data){
+        let data_to_python = JSON.stringify(data);
+        request.onload = function(){
+            if (request.status == 200){
+                alert("行程已預定");
+            }else if(request.status >= 400){
+                let json = JSON.parse(request.responseText);
+                alert(json.message);
+            };
+        };
+        request.open("POST" , requestURL , true);
+        request.setRequestHeader('content-type', 'application/json');
+        request.send(data_to_python);
+    };
+};
+
 

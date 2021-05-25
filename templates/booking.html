@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/repo_booking.css" type="text/css">
+    <script>
+        var delete_img_path = "{{ url_for('static' , filename='css/fig/delete.png') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/booking.js') }}" defer></script>
+    <title>預定行程</title>
+</head>
+<body onload="init();">
+    <div class="background_layer" onclick="closeJump();"></div>
+    <div class = "signbox">
+        <div class="sign_upper"></div>
+        <img src="{{ url_for('static', filename='css/fig/close.png') }}" id="close_window" onclick="closeJump();">
+        <form class="signform">
+            <div class="sign_title">登入會員帳號</div>
+            <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
+            <input type="text" class="passwordbox" placeholder="輸入密碼" name="password">
+            <button class="signbut" type="button" onclick="signIn();">登入帳戶</button>
+            <div class="notification">還沒有帳戶? <span onclick="SignUpPage();">點此註冊</span></div>
+            <div class=notification style="font-weight: bold;color:red"></div>
+        </form>    
+    </div>
+    <div class = "signupbox">
+        <div class="sign_upper"></div>
+        <img src="{{ url_for('static', filename='css/fig/close.png') }}" id="close_window" onclick="closeJump();">
+        <form class="signupform">
+            <div class="sign_title">註冊會員帳號</div>
+            <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
+            <input type="text" class="passwordbox" placeholder="請輸入密碼" name="password">
+            <input type="text" class="username" placeholder="輸入用戶名" name="username">
+            <button type="button" class="signbut" onclick="signUp();">註冊帳戶</button>
+            <div class="notification">已有帳戶?<span style="font-weight: bold;" onclick="BackToSign();"> 點此登入</span></div>
+            <div class="notification" style="font-weight: bold; color:red"></div>
+        </form>    
+    </div>
+    <script src="{{ url_for('static', filename='js/sign.js') }}"></script>
+    <div class="Upperlayer">
+        <div class="title">台北一日遊</div>
+        <div class="title_left_button">
+            <button id="order">預定行程</button>
+            <button id="signin" onclick="SignInPage();">登入/註冊</button>
+        </div>
+    </div>
+    <div class="ordertitle">
+        <div>您好，</div>
+        <div id="orderuser"></div>
+        <div>，待預訂的行程如下:</div>
+    </div>
+    <div class="Norder">目前沒有任何待預定的行程</div> 
+    <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
+    <form action="" class="pay">
+        <div class="ordertitle">您的聯絡資訊</div>
+        <div class="payinfo">
+            <div class="inputbox">聯絡姓名：<input type="text" id="payinfo"></div>
+            <div class="inputbox">聯絡信箱：<input type="text" id="payinfo"></div> 
+            <div class="inputbox">手機號碼：<input type="text" id="payinfo"></div>  
+            <div class="warning">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+        </div>
+        <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
+        <div class="ordertitle">信用卡付款資訊</div>
+        <div class="payinfo">
+            <div class="inputbox">卡片號碼：<input type="text" id="payinfo"></div>
+            <div class="inputbox">過期時間：<input type="date" id="payinfo"></div> 
+            <div class="inputbox">驗證密碼：<input type="text" id="payinfo"></div>  
+        </div>
+        <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
+        <div class="Price">總價：新台幣2000元</div>
+        <button class="paybut">確認訂購並付款</button>
+    </form>
+    <div class="footer">
+        COPYRIGHT © 2021 台北一日遊
+    </div> 
+</body>
+</html>
