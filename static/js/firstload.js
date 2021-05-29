@@ -64,7 +64,7 @@ function init(){
     request.onload = function () {
         
         if (request.status >= 200 && request.status < 400) {
-            var json = JSON.parse(request.responseText);
+            let json = JSON.parse(request.responseText);
             data = json.data;
             createContent();
             for(let i = 0; i < data.length ; i++){

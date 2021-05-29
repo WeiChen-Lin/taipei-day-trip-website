@@ -473,17 +473,17 @@ body{
     }
     .content{
         width:100%;
-	height:380px;
+	    height:380px;
     }
     .view{
         width:45%;
-	height:80%;
-	overflow:hidden;
+        height:80%;
+        overflow:hidden;
     }
     .view #player{
-	width:100%;
-	height:100%;
-	max-width:405px;
+        width:100%;
+        height:100%;
+        max-width:405px;
     }
     .view_travel #description{
         width:80%;

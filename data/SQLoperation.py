@@ -297,4 +297,120 @@ class Booking_SQL:
         with self.conn.cursor() as cursor:
             cursor.execute(command , (user_id, attraction_id, date, time) )
             self.conn.commit()
-           
+
+class Order_SQL:
+
+    def __init__(self , config):
+        # 資料庫參數設定
+        self.db_set = config
+
+        # 建立Connection物件
+        self.conn = pymysql.connect(**self.db_set) 
+
+    def tableInsertOrder(self, userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no):
+
+        insert_command = ("insert into weborder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
+        " Values (%s, %s, %s, %s, %s, %s, %s, %s);")
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(insert_command , ( userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no) )
+            self.conn.commit()             
+
+    def tableInsertOrderAttr(self, order_no, attr_id, date, time):
+
+        insert_command = ("insert into orderAttr(order_no, attr_id, date, time)"
+        " Values (%s, %s, %s, %s);")
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(insert_command, (order_no, attr_id, date, time) )
+            self.conn.commit() 
+
+    def tableUpdate(self, order_no):
+        
+        insert_command = "UPDATE WebOrder SET pay_check  = 1 WHERE pay_order_no = %s;"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(insert_command, (order_no) )
+            self.conn.commit() 
+    
+    def getImgaeUrl(self, attraction_id):
+
+        image_id_command = "select img_id from Attraction where id=%s"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(image_id_command , (attraction_id) )
+            self.conn.commit()
+            img_id = cursor.fetchone()
+        
+        image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(image_url_command , (img_id[0]) )
+            self.conn.commit()
+            img_url = cursor.fetchone()
+        
+        return img_url
+
+    def getOrderNo(self, user_id):
+
+        command = "select pay_order_no from WebOrder where userID = %s"
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(command , (user_id) )
+            self.conn.commit()
+            OrderNo = cursor.fetchall()
+
+        return OrderNo
+
+    def getOrder(self, user_id):
+        
+        OrderNo = self.getOrderNo(user_id)
+
+        command = ("select orderAttr.order_no, WebOrder.price, orderAttr.attr_id, attraction.name, attraction.address, orderAttr.date," 
+        "orderAttr.time, WebOrder.contact_name, WebOrder.contact_email, WebOrder.contact_phone, WebOrder.pay_check"
+        " from orderAttr" 
+        " left join attraction on orderAttr.attr_id = attraction.id left join WebOrder on orderAttr.order_no = WebOrder.pay_order_no" 
+        " where orderAttr.order_no = %s;")
+
+        data = {}
+        orderinfo = []
+        
+        for num in OrderNo:
+            
+            with self.conn.cursor() as cursor:
+                cursor.execute(command , (num[0]))
+                self.conn.commit()
+                OrderDetail = cursor.fetchall()
+            
+            component = {}
+            component["number"] = OrderDetail[0][0]
+            component["price"] = OrderDetail[0][1]
+            trip_list = []
+            
+            for od in OrderDetail:
+                attraction = {}
+                attraction["id"] = od[2]
+                attraction["name"] = od[3]
+                attraction["address"] = od[4]
+                attraction["image"] = self.getImgaeUrl(od[2])[0]
+                trip = {}
+                trip["attraction"] = attraction
+                trip["date"] = od[5]
+                trip["time"] = od[6]
+                trip_list.append(trip)
+            
+            component["trip"] = trip_list
+            contact = {}
+            contact["name"] = od[7]
+            contact["email"] = od[8]
+            contact["phone"] = od[9]
+            component["contact"] = contact
+            component["status"] = od[10]
+
+            orderinfo.append(component)
+
+        data["data"] = orderinfo
+
+        return data
+        
+        

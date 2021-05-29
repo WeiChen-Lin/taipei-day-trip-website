@@ -1,8 +1,9 @@
 from flask import *
-import sys , json, jwt, datetime
+import sys , json, jwt, datetime, time
 sys.path.append("./data")
 
-from SQLoperation import MySQLCon, User_MySQLCon, Booking_SQL
+from GetTapPay import *
+from SQLoperation import MySQLCon, User_MySQLCon, Booking_SQL, Order_SQL
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -16,10 +17,12 @@ sqlConfig = {
     "charset" : config["charset"]
 }
 
+partner_key = config["partner_key"]
 
 sqlObject = MySQLCon(sqlConfig)
 UsersqlObject = User_MySQLCon(sqlConfig)
 bookingsqlObject = Booking_SQL(sqlConfig)
+ordersqlObject = Order_SQL(sqlConfig)
 app=Flask(__name__) 
 
 app.config["JSON_AS_ASCII"]=False
@@ -44,6 +47,7 @@ def booking():
 
 @app.route("/thankyou")
 def thankyou():
+
     return render_template("thankyou.html")
 
 @app.route("/api/attractions")
@@ -332,6 +336,103 @@ def OperBooking():
         response.headers["Content-Type"] = "application/json"
         
         return response
+
+@app.route("/api/orders", methods=["POST", "GET"])
+def Order():
+    #訂單建立，並即將開始付款
+    if request.method == 'POST':
+        
+        data = request.get_json()
+        
+        
+        cookie = request.cookies.get("token")
+        
+        if not cookie:
+
+            response = make_response( jsonify({"error":True, "message":"未登入，拒絕動作"}) , 403)
+
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+        user_info = jwt.decode(cookie, app.config["SECRET_KEY"] , algorithms=['HS256'])
+        userID = UsersqlObject.getUserInfor(user_info["email"])[0]
+        
+        detail = "台北一日遊 " + str(userID) + " 訂單" 
+        prime = data["prime"]
+        price = data["order"]["price"]
+        contact_name = data["order"]["contact"]["name"]
+        contact_email = data["order"]["contact"]["email"]
+        contact_phone = data["order"]["contact"]["phone_number"]
+        pay_check = 0
+        pay_order_no = str(datetime.datetime.now().year) + str(datetime.datetime.now().month) + str(datetime.datetime.now().day)
+        for i in range(len(prime)):
+            if i % 2 == 0:
+                pay_order_no += prime[i]
+        
+        ordersqlObject.tableInsertOrder(userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)
+        
+        for attr in data["order"]["trip"]:
+            ordersqlObject.tableInsertOrderAttr(pay_order_no, attr["attraction"]["id"], attr["date"], attr["time"])
+        
+        pay_info = json.loads(Non3Dpay(partner_key, prime, detail, price, data["order"]["contact"]))
+        
+        if pay_info["status"] == 0:
+            
+            ordersqlObject.tableUpdate(pay_order_no)
+
+            for attr in data["order"]["trip"]:
+                bookingsqlObject.deleteBooking(userID, attr["attraction"]["id"], attr["date"], attr["time"])
+            
+            response = make_response( jsonify(
+                {"data":{"number":pay_order_no, "payment":{"status":pay_info["status"],"message":"付款成功"}}}) , 200)
+
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+        else:
+
+            response = make_response( jsonify(
+                {"data":{"number":pay_order_no, "payment":{"status":pay_info["status"],"message":"付款未完成"}}}) , 200)
+
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+    elif request.method == "GET":
+        
+        cookie = request.cookies.get("token")
+        
+        if not cookie:
+
+            response = make_response( jsonify({"error":True, "message":"未登入，拒絕動作"}) , 403)
+
+            response.headers["Content-Type"] = "application/json"
+            
+            return response
+
+        user_info = jwt.decode(cookie, app.config["SECRET_KEY"] , algorithms=['HS256'])
+        userID = UsersqlObject.getUserInfor(user_info["email"])[0]
+
+        data =  ordersqlObject.getOrder(userID)
+
+        response = make_response( jsonify(data) , 200)
+
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
+    
+    else:
+
+        response = make_response( jsonify({"error":True, "message":"伺服器錯誤"}) , 500)
+
+        response.headers["Content-Type"] = "application/json"
+        
+        return response
+
+
+        
 
 app.run(port=3000 , host="0.0.0.0")
 

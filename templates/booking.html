@@ -64,13 +64,15 @@
         <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
         <div class="ordertitle">信用卡付款資訊</div>
         <div class="payinfo">
-            <div class="inputbox">卡片號碼：<input type="text" id="payinfo"></div>
-            <div class="inputbox">過期時間：<input type="date" id="payinfo"></div> 
-            <div class="inputbox">驗證密碼：<input type="text" id="payinfo"></div>  
+            <div class="tappay" id="card-number"></div>
+            <div class="tappay" id="tappay-expiration-date"></div>
+            <div class="tappay" id="cvc"></div>
+            <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+            <script src="{{ url_for('static', filename='js/tappay.js') }}"></script>
         </div>
         <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
         <div class="Price">總價：新台幣2000元</div>
-        <button class="paybut">確認訂購並付款</button>
+        <button type="button" class="paybut_disabled" id="paybut">確認訂購並付款</button>
     </form>
     <div class="footer">
         COPYRIGHT © 2021 台北一日遊

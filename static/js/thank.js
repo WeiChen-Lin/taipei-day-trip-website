@@ -14,10 +14,12 @@ function init(){
                 button.removeChild(button.childNodes[0]);
                 button.appendChild(text); 
 
-                getBooking();
                 let username = document.querySelector("#orderuser");
                 let username_text = document.createTextNode(json.data.name);
                 username.appendChild(username_text);
+
+                getOrder();
+
             }else if(json.data == null){
                 alert("請先登入");
                 window.location.href="http://52.76.36.230:3000/";
@@ -30,46 +32,83 @@ function init(){
     
 }
 
-function getBooking(){
-    let requestURL = "http://52.76.36.230:3000/api/booking";
+function getOrder(){
+    let requestURL = "http://52.76.36.230:3000/api/orders";
     let request = new XMLHttpRequest();
     request.onload = function(){
-        if (request.status == 200){
+        if(request.status == 200){
             let json = JSON.parse(request.responseText);
             if(json.data != null){
-                json.data.forEach( attr => { 
-                    if(attr.time == "Morning"){
-                        let time = "早上九點到下午四點";
-                        createBooking(attr.attraction.id, attr.attraction.name, attr.date, time, attr.price, attr.attraction.address, attr.attraction.image, attr.time);
-                    }else if(attr.time == "Afternoon"){
-                        let time = "下午兩點到晚上九點";
-                        createBooking(attr.attraction.id, attr.attraction.name, attr.date, time, attr.price, attr.attraction.address, attr.attraction.image, attr.time);
-                    }
-                let pay= document.querySelector("body > form");
-                pay.style.display="block";
+                json.data.forEach( ele => {
+                    createOrder(ele.number, ele.price, ele.status, ele.trip);            
                 });
-            }else{
+            }else if(json.data == []){
                 let Norder = document.querySelector("body > div.Norder");
                 Norder.style.display="block";
             }
-        };
+        }else if(request.status >= 400){
+            alert("請先登入");
+            window.location.href="http://52.76.36.230:3000/";
+        }
     };
-    request.open("GET" , requestURL , true);
+    request.open("GET" ,requestURL ,true);
     request.setRequestHeader('content-type', 'application/json');
     request.send();
-}   
+};   
 
-function createBooking(id, name, date, time, price, address, image_url, attr_time){
+function createOrder(paynumber, price, status, attraction){
+    let coverpaybox = document.createElement("div");
+    coverpaybox.className = "coverpaybox";
+
+    let paystatus = document.createElement("div");
+    paystatus.className = "paystatus";
+
+    let index = document.createElement("div");
+    let index_text = document.createTextNode("編號：");
+    index.appendChild(index_text);
+    
+    let paynumber_div = document.createElement("div");
+    paynumber_div.id = "paynumber";
+    paynumber_div.style.color = "blue";
+    let paynumber_text = document.createTextNode(paynumber)
+    paynumber_div.appendChild(paynumber_text);
+    
+    let price_div = document.createElement("div");
+    price_div.id = "price";
+    let price_text = document.createTextNode("新台幣" + price);
+    price_div.appendChild(price_text);
+
+    let payornot_div = document.createElement("div");
+    payornot_div.id = "payornot";
+    if(status == "1"){
+        payornot_div.style.color = "blue";
+        let payornot_text = document.createTextNode("已付款");
+        payornot_div.appendChild(payornot_text);
+    }else if(status == "0"){
+        payornot_div.style.color = "red";
+        let payornot_text = document.createTextNode("未付款");
+        payornot_div.appendChild(payornot_text);
+    }
+    
+    paystatus.appendChild(index);
+    paystatus.appendChild(paynumber_div);
+    paystatus.appendChild(price_div);
+    paystatus.appendChild(payornot_div);
+    coverpaybox.appendChild(paystatus);
+
+    attraction.forEach( ele => {
+        let orderbox = createOrderBox(ele.attraction.image, ele.attraction.name, ele.date, ele.time, ele.attraction.address);
+        coverpaybox.appendChild(orderbox);
+    });
+
+    let body = document.body;
+    let position = document.querySelector("body > hr");
+    body.insertBefore(coverpaybox, position);
+};
+
+function createOrderBox(image_url, name, date, time, address){
     let orderbox = document.createElement("div");
     orderbox.className="orderbox";
-
-    let deleteImg = document.createElement("img");
-    deleteImg.className="deleteOrder";
-    deleteImg.src=delete_img_path;
-    orderbox.appendChild(deleteImg);
-    deleteImg.addEventListener("click" , () => {
-        DeleteOrder(id, date, attr_time);
-    })
 
     let orderImgBox = document.createElement("div");
     orderImgBox.className = "orderimg";
@@ -88,13 +127,10 @@ function createBooking(id, name, date, time, price, address, image_url, attr_tim
     orderinfo.appendChild(ordertitle);
     orderinfo.appendChild(createDiv("日期：", date));
     orderinfo.appendChild(createDiv("時間：", time));
-    orderinfo.appendChild(createDiv("價錢：", "新台幣 " + price + " 元"));
     orderinfo.appendChild(createDiv("地點：", address));
     orderbox.appendChild(orderinfo);
 
-    let body = document.body;
-    let position = document.querySelector("body > hr");
-    body.insertBefore(orderbox,position);
+    return orderbox;
 }
 
 function createDiv(text, detail){
@@ -110,22 +146,3 @@ function createDiv(text, detail){
 
     return div;
 }
-
-function DeleteOrder(attraction_id, date, time){
-    let requestURL = "http://52.76.36.230:3000/api/booking";
-    let request = new XMLHttpRequest();
-    let data = {}
-    data.attraction_id = attraction_id;
-    data.date = date;
-    data.time = time;
-    let data_to_python = JSON.stringify(data);
-    request.onload = function(){
-        if(request.status == 200){
-            window.location = window.location;
-        };
-    }
-    request.open("DELETE" , requestURL , true);
-    request.setRequestHeader('content-type', 'application/json');
-    request.send(data_to_python);
-}
-
