@@ -108,7 +108,7 @@ function signUp(){
 
 function signOut(){
 
-    let requestURL = "http://127.0.0.1:3000/api/user";
+    let requestURL = "http://52.76.36.230:3000/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){

@@ -55,7 +55,7 @@ function SubmitPay(){
     let phone = document.querySelectorAll("#payinfo")[2].value;
     TPDirect.card.getPrime( (result) => {
         let prime = result.card.prime;
-        let requestURL = "http://127.0.0.1:3000/api/booking";
+        let requestURL = "http://52.76.36.230:3000/api/booking";
         let request = new XMLHttpRequest();
         request.onload = function(){
             if(request.status == 200){

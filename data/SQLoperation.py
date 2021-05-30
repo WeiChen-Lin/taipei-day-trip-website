@@ -309,7 +309,7 @@ class Order_SQL:
 
     def tableInsertOrder(self, userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no):
 
-        insert_command = ("insert into weborder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
+        insert_command = ("insert into WebOrder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
         " Values (%s, %s, %s, %s, %s, %s, %s, %s);")
 
         with self.conn.cursor() as cursor:
@@ -366,10 +366,10 @@ class Order_SQL:
         
         OrderNo = self.getOrderNo(user_id)
 
-        command = ("select orderAttr.order_no, WebOrder.price, orderAttr.attr_id, attraction.name, attraction.address, orderAttr.date," 
+        command = ("select orderAttr.order_no, WebOrder.price, orderAttr.attr_id, Attraction.name, Attraction.address, orderAttr.date," 
         "orderAttr.time, WebOrder.contact_name, WebOrder.contact_email, WebOrder.contact_phone, WebOrder.pay_check"
         " from orderAttr" 
-        " left join attraction on orderAttr.attr_id = attraction.id left join WebOrder on orderAttr.order_no = WebOrder.pay_order_no" 
+        " left join Attraction on orderAttr.attr_id = Attraction.id left join WebOrder on orderAttr.order_no = WebOrder.pay_order_no" 
         " where orderAttr.order_no = %s;")
 
         data = {}
