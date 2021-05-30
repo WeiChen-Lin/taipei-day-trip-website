@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付款狀態</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/repo_thank.css') }} " type="text/css">
+    <script src="{{ url_for('static', filename='js/thank.js') }}"></script>
+</head>
+<body onload="init();">
+    <div class="background_layer" onclick="closeJump();"></div>
+    <div class = "signbox">
+        <div class="sign_upper"></div>
+        <img src="{{ url_for('static', filename='css/fig/close.png') }}" id="close_window" onclick="closeJump();">
+        <form class="signform">
+            <div class="sign_title">登入會員帳號</div>
+            <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
+            <input type="text" class="passwordbox" placeholder="輸入密碼" name="password">
+            <button class="signbut" type="button" onclick="signIn();">登入帳戶</button>
+            <div class="notification">還沒有帳戶? <span onclick="SignUpPage();">點此註冊</span></div>
+            <div class=notification style="font-weight: bold;color:red"></div>
+        </form>    
+    </div>
+    <div class = "signupbox">
+        <div class="sign_upper"></div>
+        <img src="{{ url_for('static', filename='css/fig/close.png') }}" id="close_window" onclick="closeJump();">
+        <form class="signupform">
+            <div class="sign_title">註冊會員帳號</div>
+            <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
+            <input type="text" class="passwordbox" placeholder="請輸入密碼" name="password">
+            <input type="text" class="username" placeholder="輸入用戶名" name="username">
+            <button type="button" class="signbut" onclick="signUp();">註冊帳戶</button>
+            <div class="notification">已有帳戶?<span style="font-weight: bold;" onclick="BackToSign();"> 點此登入</span></div>
+            <div class="notification" style="font-weight: bold; color:red"></div>
+        </form>    
+    </div>
+    <script src="{{ url_for('static', filename='js/sign.js') }}"></script>
+    <div class="Upperlayer">
+        <div class="title">台北一日遊</div>
+        <div class="title_left_button">
+            <button id="order">預定行程</button>
+            <button id="signin" onclick="SignInPage();">登入/註冊</button>
+        </div>
+    </div>
+    <div class="ordertitle">
+        <div>您好，</div>
+        <div id="orderuser"></div>
+        <div>，您的訂單狀態為：</div>
+    </div>
+    <div class="Norder">目前沒有任何完成的訂單</div> 
+    <hr style="width:62.5%;margin-top:30px;margin-left:auto;margin-right:auto;margin-bottom:0px;color:#E8E8E8;">
+    
+    <div class="footer">
+        COPYRIGHT © 2021 台北一日遊
+    </div> 
+</body>
+</html>

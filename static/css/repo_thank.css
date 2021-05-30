@@ -172,6 +172,13 @@ body{
     cursor: pointer;
     box-shadow:0 0 5px 5px #ccc;
 }
+.coverpaybox{
+    border:1px dashed rgb(77, 73, 73);
+    border-radius: 30px;
+    width:70%;
+    margin:auto;
+    margin-top: 20px;
+}
 .ordertitle{
     display: flex;
     font-size: 1.2rem;
@@ -181,6 +188,41 @@ body{
     margin-top:34px;
     vertical-align: left;
     color:rgba(102, 102, 102, 1);
+    width:50%;
+}
+.orderbox{
+    margin-left:25%;
+    margin-top:17.5px;
+    margin-bottom: 17.5px;
+    width:55%;
+    border-radius: 20px;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+}
+.orderimg{
+    overflow: hidden;
+    width:266px;
+    height:200px;
+    border-radius: 20px;
+}
+.orderinfo{
+    margin-left:22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height:200px;
+}
+.paystatus{
+    display: flex;
+    font-size: 1rem;
+    line-height: 16px;
+    font-weight: 700;  
+    margin-left:24%;
+    margin-top:34px;
+    vertical-align: left;
+    color:rgba(102, 102, 102, 1);
+    justify-content: space-between;
     width:50%;
 }
 .Norder{
@@ -203,17 +245,6 @@ body{
     align-items: flex-start;
     position: relative;
 }
-.deleteOrder{
-    width:30px;
-    height:30px;
-    flex:none;
-    position: absolute;
-    top:0px;
-    right:0px;
-}
-.deleteOrder:hover{
-    cursor:pointer;
-}
 .orderimg{
     overflow: hidden;
     width:266px;
@@ -228,99 +259,6 @@ body{
     
     height:200px;
 }
-#title{
-    font-weight:bold;
-    font-size:1.3rem;
-    line-height:1.3rem;
-    color:#448899;
-}
-#info{
-    font-weight: 700;
-    font-size:1.2rem;
-    line-height: 1.2rem;
-    color:rgba(102, 102, 102, 1);
-
-}
-#detail{
-    font-size:1rem;
-    color:#666666;
-    line-height: 1rem;
-    font-weight: normal;
-}
-.payinfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-left:24%;
-    margin-top:30px;
-    font-size:1rem;
-    color:#666666;
-    height:200px;
-    width:50%;
-    line-height: 38px;
-}
-.warning{
-    font-size:1rem;
-    line-height: 1rem;
-    font-weight: 700;
-}
-.pay{
-    height:800px;
-    position: relative;
-    display: none;
-}
-.inputbox input#payinfo{
-    border:1px solid #E8E8E8;
-    width:200px;
-    height:38px;
-    border-radius: 5px;
-}
-.tappay{
-    border:1px solid #E8E8E8;
-    width:300px;
-    height:38px;
-    border-radius: 5px;
-    padding-left: 10px;
-}
-.Price{
-    position: absolute;
-    right:10%;
-    width:50%;
-    font-size:1rem;
-    line-height: 16px;
-    font-weight: 700;
-    margin-top:20px;
-    text-align: right;
-}
-.paybut{
-    width:230px;
-    height:47px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 1.6rem;
-    color:white;
-    background-color:#448899;
-    border:none;
-    position:absolute;
-    right:10%;
-    bottom:13%;
-}
-.paybut:hover{
-    opacity:70%
-}
-.paybut_disabled{
-    width:230px;
-    height:47px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 1.6rem;
-    color:black;
-    background-color:transparent;
-    border:1px solid red;
-    position:absolute;
-    right:10%;
-    bottom:13%;
-}
 .footer{
     text-align: center;
     line-height: 74px;
@@ -330,66 +268,27 @@ body{
     background: #757575;
 }
 @media (min-width:1200px){
-    .ordertitle{
-        width:900px;
-        margin-left:20%;
-    }
-    .orderbox{
-        width:900px;
-        margin-left:18%;
-    }
-    .Norder{
-        width:900px;
-        margin-left:20%;
+    .coverpaybox{
+        width:1200px;
     }
 }
 @media (min-width:801px) and (max-width:1199px){
-    .ordertitle{
-        width:80%;
-        margin-top:30px;
-        margin-left:auto;
-        margin-right: auto;
+    .coverpaybox{
+        width: 90%;
     }
-    .orderbox{
-        width:80%;
-        margin-top:30px;
-        margin-left:auto;
-        margin-right: auto;
-    }
-    .Norder{
-        width:80%;
-        margin-left:auto;
-        margin-right: auto;
-    }
-    .warning{
-        line-height: 1.2rem;
+    .paystatus{
+        flex-direction: column;
     }
 }
 @media (min-width:600px) and (max-width:800px){
-    .ordertitle{
-        width:80%;
-        margin-top:30px;
-        margin-left:auto;
-        margin-right: auto;
-    }
-    .orderbox{
-        width:80%;
-        margin-top:30px;
-        margin-left:auto;
-        margin-right: auto;
-    }
-    .Norder{
-        width:80%;
-        margin-left:auto;
-        margin-right: auto;
-    }
-    .warning{
-        line-height: 1.2rem;
-    }
-}
-@media (max-width:599px){
     html{
-        font-size: 15px;
+        font-size: 12px;
+    }
+    .coverpaybox{
+        width: 90%;
+    }
+    .paystatus{
+        flex-direction: column;
     }
     .Upperlayer .title{
         position: absolute;
@@ -399,55 +298,23 @@ body{
         position: absolute;
         right:2%;
     }
-    .ordertitle{
-        font-size: 1rem;
-        margin-left:5%;
+}
+@media (max-width:599px){
+    html{
+        font-size: 12px;
+    }
+    .coverpaybox{
         width: 90%;
     }
-    .orderbox{
-        margin-left:2.5%;
-        margin-top:35px;
-        width:90%;
+    .paystatus{
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
     }
-    .Norder{
-        width:90%;
-        margin-left:5%;
-    }
-    .orderimg{
-        width:100%;
-    }
-    .orderinfo{
-        margin-left:0;
-        margin-right: auto;
-        margin-top:20px;
-        height:200px;
-    }
-    .deleteOrder{
+    .Upperlayer .title{
         position: absolute;
-        top: 213px;
-        right:0px;
+        left:2%;
     }
-    .payinfo{
-        margin-left:5%;
-        margin-top:30px;
-        width:90%;
-    }
-    .warning{
-        line-height:1.2rem;
-    }
-    .paybut{
-        width:150px;
-        height:27px;
-        font-size: 0.9rem;
-        bottom:17%;
-    }
-    .paybut_disabled{
-        width:150px;
-        height:27px;
-        font-size: 0.9rem;
-        bottom:17%;
+    .Upperlayer .title_left_button{
+        position: absolute;
+        right:2%;
     }
 }
