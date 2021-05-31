@@ -228,7 +228,7 @@ class Booking_SQL:
         " Values (%s , %s , %s, %s , %s);" )
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(insert_command , ( user_id, attraction_id, date, time, price) )
+            cursor.execute(insert_command , ( user_id, attraction_id, date, time, price,) )
             self.conn.commit()
 
     def getImgaeUrl(self, attraction_id):
@@ -236,14 +236,14 @@ class Booking_SQL:
         image_id_command = "select img_id from Attraction where id=%s"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(image_id_command , (attraction_id) )
+            cursor.execute(image_id_command , (attraction_id,) )
             self.conn.commit()
             img_id = cursor.fetchone()
         
         image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(image_url_command , (img_id[0]) )
+            cursor.execute(image_url_command , (img_id[0],) )
             self.conn.commit()
             img_url = cursor.fetchone()
         
@@ -259,7 +259,7 @@ class Booking_SQL:
         " where booking.user_id=%s;")
         
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(command , (user_id) )
+            cursor.execute(command , (user_id,) )
             self.conn.commit()
             data = cursor.fetchall()
             
@@ -297,7 +297,7 @@ class Booking_SQL:
         command = "delete from booking where user_id=%s and attraction_id=%s and date=%s and time=%s;"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(command , (user_id, attraction_id, date, time) )
+            cursor.execute(command , (user_id, attraction_id, date, time,) )
             self.conn.commit()
 
 class Order_SQL:
@@ -311,11 +311,11 @@ class Order_SQL:
 
     def tableInsertOrder(self, userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no):
 
-        insert_command = ("insert into weborder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
+        insert_command = ("insert into WebOrder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
         " Values (%s, %s, %s, %s, %s, %s, %s, %s);")
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(insert_command , ( userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no) )
+            cursor.execute(insert_command , ( userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no,) )
             self.conn.commit()             
 
     def tableInsertOrderAttr(self, order_no, attr_id, date, time):
@@ -324,7 +324,7 @@ class Order_SQL:
         " Values (%s, %s, %s, %s);")
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(insert_command, (order_no, attr_id, date, time) )
+            cursor.execute(insert_command, (order_no, attr_id, date, time,) )
             self.conn.commit() 
 
     def tableUpdate(self, order_no):
@@ -332,7 +332,7 @@ class Order_SQL:
         insert_command = "UPDATE WebOrder SET pay_check  = 1 WHERE pay_order_no = %s;"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(insert_command, (order_no) )
+            cursor.execute(insert_command, (order_no,) )
             self.conn.commit() 
     
     def getImgaeUrl(self, attraction_id):
@@ -340,14 +340,14 @@ class Order_SQL:
         image_id_command = "select img_id from Attraction where id=%s"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(image_id_command , (attraction_id) )
+            cursor.execute(image_id_command , (attraction_id,) )
             self.conn.commit()
             img_id = cursor.fetchone()
         
         image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(image_url_command , (img_id[0]) )
+            cursor.execute(image_url_command , (img_id[0],) )
             self.conn.commit()
             img_url = cursor.fetchone()
         
@@ -358,7 +358,7 @@ class Order_SQL:
         command = "select pay_order_no from WebOrder where userID = %s"
 
         with self.conn.cursor(buffered=True) as cursor:
-            cursor.execute(command , (user_id) )
+            cursor.execute(command , (user_id,) )
             self.conn.commit()
             OrderNo = cursor.fetchall()
 
@@ -368,10 +368,10 @@ class Order_SQL:
         
         OrderNo = self.getOrderNo(user_id)
 
-        command = ("select orderAttr.order_no, WebOrder.price, orderAttr.attr_id, attraction.name, attraction.address, orderAttr.date," 
+        command = ("select orderAttr.order_no, WebOrder.price, orderAttr.attr_id, Attraction.name, Attraction.address, orderAttr.date," 
         "orderAttr.time, WebOrder.contact_name, WebOrder.contact_email, WebOrder.contact_phone, WebOrder.pay_check"
         " from orderAttr" 
-        " left join attraction on orderAttr.attr_id = attraction.id left join WebOrder on orderAttr.order_no = WebOrder.pay_order_no" 
+        " left join Attraction on orderAttr.attr_id = Attraction.id left join WebOrder on orderAttr.order_no = WebOrder.pay_order_no" 
         " where orderAttr.order_no = %s;")
 
         data = {}
@@ -380,7 +380,7 @@ class Order_SQL:
         for num in OrderNo:
             
             with self.conn.cursor(buffered=True) as cursor:
-                cursor.execute(command , (num[0]))
+                cursor.execute(command , (num[0],))
                 self.conn.commit()
                 OrderDetail = cursor.fetchall()
             
