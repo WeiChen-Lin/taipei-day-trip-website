@@ -58,6 +58,12 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
 function init(){
     signCheck();
     BookingPage();
+
+    let title = document.querySelector("body > div.Upperlayer > div.title");
+    title.addEventListener("click", () => {
+        window.location.href="http://52.76.36.230:3000/";
+    })
+    
     var requestURL = "http://52.76.36.230:3000/api/attractions?page=0";
     var request = new XMLHttpRequest();
 
@@ -161,14 +167,8 @@ function getform(position){
 };
 
 function SearchAttr(){
-    let btn = document.querySelector("#search_icon");
-    window.addEventListener("submit" , function(btn){
-        btn.preventDefault();
-    });
-
-    let position = document.querySelector("#search_box");
-    let obj = getform(position);
-    console.log(obj);
+    let btn = document.querySelector("body > div.Middlelayer > div.search > div");
+    let keyword = document.querySelector("#search_input").value;
 
     let old_content = document.getElementsByClassName("content");
     for(let i = 0 ; i < old_content.length ; i++){
@@ -177,7 +177,6 @@ function SearchAttr(){
     
     check_load = null;
     
-    keyword = obj.input_keyword;
     loadPage( 0 , keyword);
     
     return false;

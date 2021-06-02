@@ -11,6 +11,11 @@ function init(){
     signCheck();
     BookingPage();
 
+    let title = document.querySelector("body > div.Upperlayer > div.title");
+    title.addEventListener("click", () => {
+        window.location.href="http://52.76.36.230:3000/";
+    })
+    
     var requestURL = "http://52.76.36.230:3000/api/attraction/" + id;
     var request = new XMLHttpRequest();
 

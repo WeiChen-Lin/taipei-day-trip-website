@@ -18,6 +18,21 @@ function init(){
                 let username = document.querySelector("#orderuser");
                 let username_text = document.createTextNode(json.data.name);
                 username.appendChild(username_text);
+
+                let title = document.querySelector("body > div.Upperlayer > div.title");
+                title.addEventListener("click", () => {
+                    window.location.href="http://52.76.36.230:3000/";
+                })
+                
+                let trip = document.querySelector("#order");
+                trip.style.display ="none";
+
+                let order = document.querySelector("#orderlist");
+                order.style.display = "block";
+                order.addEventListener("click", () => {
+                    window.location.href="http://52.76.36.230:3000/thankyou";
+                })
+        
             }else if(json.data == null){
                 alert("請先登入");
                 window.location.href="http://52.76.36.230:3000/";

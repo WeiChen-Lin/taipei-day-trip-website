@@ -16,10 +16,12 @@
         <form class="signform">
             <div class="sign_title">登入會員帳號</div>
             <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
-            <input type="text" class="passwordbox" placeholder="輸入密碼" name="password">
+            <div class="input_box">
+                <input type="text" class="passwordbox" placeholder="輸入密碼" name="password">
+                <div class="error"><em></em><span></span></div>
+            </div>
             <button class="signbut" type="button" onclick="signIn();">登入帳戶</button>
-            <div class="notification">還沒有帳戶? <span onclick="SignUpPage();">點此註冊</span></div>
-            <div class=notification style="font-weight: bold;color:red"></div>
+            <div class="notification">還沒有帳戶? <span onclick="SignUpPage();" class="signmessage">點此註冊</span></div>
         </form>    
     </div>
     <div class = "signupbox">
@@ -27,18 +29,29 @@
         <img src="{{ url_for('static', filename='css/fig/close.png') }}" id="close_window" onclick="closeJump();">
         <form class="signupform">
             <div class="sign_title">註冊會員帳號</div>
-            <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
-            <input type="text" class="passwordbox" placeholder="請輸入密碼" name="password">
-            <input type="text" class="username" placeholder="輸入用戶名" name="username">
+            <div class="input_box">
+                <input type="text" class="emailbox" placeholder="輸入電子信箱" name="email">
+                <div class="error"><em></em><span></span>帳號已有人使用</div>
+            </div>
+            <div class="input_box">
+                <input type="password" class="passwordbox" placeholder="請輸入密碼" name="password">
+            </div>
+            <div class="input_box">
+                <input type="text" class="username" placeholder="輸入用戶名" name="username">
+                <div class="error"><em></em><span></span>用戶名已被使用</div>
+            </div>
             <button type="button" class="signbut" onclick="signUp();">註冊帳戶</button>
-            <div class="notification">已有帳戶?<span style="font-weight: bold;" onclick="BackToSign();"> 點此登入</span></div>
-            <div class="notification" style="font-weight: bold; color:red"></div>
+            <div class="notification">已有帳戶?
+                <span onclick="BackToSign();" class="signmessage"> 點此登入</span>
+                <div class="successSignUp"><em></em><span></span>成功註冊! 請點擊此處進行登入</div>
+            </div>
         </form>    
     </div>
     <script src="{{ url_for('static', filename='js/sign.js') }}"></script>
     <div class="Upperlayer">
         <div class="title">台北一日遊</div>
         <div class="title_left_button">
+            <button id="orderlist">查看訂單</button>
             <button id="order">預定行程</button>
             <button id="signin" onclick="SignInPage();">登入/註冊</button>
         </div>
@@ -48,12 +61,8 @@
             <div id="title_1">輕鬆享受台北一日悠閒</div>
             <div id="title_2">探索每個角落，體驗城市的深度旅遊行程</div>
             <div class="search">
-                <form id="search_box" onsubmit="SearchAttr();">
-                    <input type="text" id="view_search" placeholder="輸入景點名稱查詢" name="input_keyword">
-                    <button id="search_icon" type="submit">
-                        <img src="{{ url_for('static', filename='css/fig/icon_search.png') }}">
-                    </button>
-                </form>
+                <input id="search_input" type="text" placeholder="輸入景點名稱查詢">
+                <div class="search_img_box" onclick="SearchAttr();"><img id="search_icon" src="{{ url_for('static', filename='css/fig/icon_search.png') }}"></div>
             </div>
     </div>
     <div class="loading">

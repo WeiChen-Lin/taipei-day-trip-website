@@ -19,6 +19,16 @@ function init(){
                 username.appendChild(username_text);
 
                 getOrder();
+                
+                let title = document.querySelector("body > div.Upperlayer > div.title");
+                title.addEventListener("click", () => {
+                    window.location.href="http://52.76.36.230:3000/";
+                })
+
+                let trip = document.querySelector("#order");
+                trip.addEventListener("click", () => {
+                    window.open("http://52.76.36.230:3000/booking");
+                })
 
             }else if(json.data == null){
                 alert("請先登入");
