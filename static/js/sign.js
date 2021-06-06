@@ -46,10 +46,10 @@ function signIn(){
     let data = getform(position);
     let data_to_python = JSON.stringify(data);
 
-    var requestURL = "http://52.76.36.230:3000/api/user";
+    var requestURL = "https://wcl-travel.com/api/user";
     var request = new XMLHttpRequest();
 
-    request.open("patch" , requestURL , true);
+    request.open("PATCH" , requestURL , true);
     request.setRequestHeader('content-type', 'application/json');
     request.send(data_to_python);
     
@@ -68,7 +68,7 @@ function signIn(){
             let orderlist = document.querySelector("#orderlist");
             orderlist.style.display = "block";
             orderlist.addEventListener("click", () => {
-                window.open("http://52.76.36.230:3000/thankyou");
+                window.open("https://wcl-travel.com/thankyou");
             })
         }else if(request.status >= 400){
 
@@ -96,7 +96,7 @@ function signUp(){
     let data = getform(position);
     let data_to_python = JSON.stringify(data);
 
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
 
     let signIn = document.querySelector("body > div.signbox > form > div.notification > span");
@@ -163,7 +163,7 @@ function signUp(){
 
 function signOut(){
 
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){
@@ -183,7 +183,7 @@ function signOut(){
 
 function signCheck(){
 
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){
@@ -200,7 +200,7 @@ function signCheck(){
                 let orderlist = document.querySelector("#orderlist");
                 orderlist.style.display = "block";
                 orderlist.addEventListener("click", () => {
-                    window.open("http://52.76.36.230:3000/thankyou");
+                    window.open("https://wcl-travel.com/thankyou");
                 })
             }
         };
@@ -214,14 +214,14 @@ function BookingPage(){
     let but = document.querySelector("#order");
     
     but.addEventListener("click", () => {
-        let requestURL = "http://52.76.36.230:3000/api/user";
+        let requestURL = "https://wcl-travel.com/api/user";
         let request = new XMLHttpRequest();
         request.onload = function(){
             if (request.status >= 200){
                 let json = JSON.parse(request.responseText);
                 if(json.data){
                     
-                    window.open("http://52.76.36.230:3000/booking");
+                    window.open("https://wcl-travel.com/booking");
 
                 }else if(json.data == null){
                     

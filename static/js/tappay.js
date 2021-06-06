@@ -55,7 +55,7 @@ function SubmitPay(){
     let phone = document.querySelectorAll("#payinfo")[2].value;
     TPDirect.card.getPrime( (result) => {
         let prime = result.card.prime;
-        let requestURL = "http://52.76.36.230:3000/api/booking";
+        let requestURL = "https://wcl-travel.com/api/booking";
         let request = new XMLHttpRequest();
         request.onload = function(){
             if(request.status == 200){
@@ -95,15 +95,15 @@ function SubmitPay(){
 
 function PaytoBack(data){
     let data_to_python = JSON.stringify(data);
-    let requestURL = "http://52.76.36.230:3000/api/orders";
+    let requestURL = "https://wcl-travel.com/api/orders";
     let request = new XMLHttpRequest();
     request.onload = function(){
         let json = JSON.parse(request.responseText);
         if(request.status == 200){
-            window.location.href="http://52.76.36.230:3000/thankyou"
+            window.location.href="https://wcl-travel.com/thankyou"
         }else if(request.status == 403){
             console.log(json.message);
-            window.location.href="http://52.76.36.230:3000/"
+            window.location.href="https://wcl-travel.com/"
         }
     }
     request.open("POST" , requestURL , true);

@@ -21,7 +21,7 @@ class MySQLCon:
             cursor.execute(insert_command , (img_id, name, category, description, address, transport, MRT, latitude, longitude,))
             self.conn.commit()
 
-        self.con.close()
+        self.conn.close()
 
     def tableInsertImg(self , img_id, image_url):
 
