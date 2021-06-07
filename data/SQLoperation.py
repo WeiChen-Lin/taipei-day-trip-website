@@ -1,37 +1,48 @@
-import pymysql
+import mysql.connector
+from mysql.connector import pooling
 
 class MySQLCon:
 
     def __init__(self , config):
         # 資料庫參數設定
-        self.db_set = config
-
-        # 建立Connection物件
-        self.conn = pymysql.connect(**self.db_set)
-
+        self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(**config)
+        
     def tableInsertAtr(self , img_id, name, category, description, address, transport, MRT, latitude, longitude):
-   
+        
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         #建立資料庫insert相關命令(table寫死 , 寫入id, name, category, description, address, transport, MRT, latitude, longtitude)
 
         insert_command = ("insert into Attraction(img_id, name, category, description, address, transport, MRT, latitude, longitude)"
         " Values (%s , %s , %s, %s , %s , %s, %s , %s , %s);" ) 
         
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command , (img_id, name, category, description, address, transport, MRT, latitude, longitude))
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , (img_id, name, category, description, address, transport, MRT, latitude, longitude,))
             self.conn.commit()
 
+        self.conn.close()
+
     def tableInsertImg(self , img_id, image_url):
-   
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         #建立資料庫insert相關命令(table寫死 , 寫入img_id, image_url)
 
         insert_command = "insert into Attr_img(img_id, image_url) Values (%s , %s);" 
         
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command , (img_id, image_url))
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , (img_id, image_url,))
             self.conn.commit()
+
+        self.conn.close()
 
     def getAttraction_withPage(self , page, keyword):
         
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         #先確認page正確與否
         if page < 0:
             error_json = {}
@@ -44,8 +55,8 @@ class MySQLCon:
         attr_count_command =  "select count(*) from Attraction where name like %s"
         
         keyword = "%" + keyword + "%"
-        with self.conn.cursor() as cursor:
-            cursor.execute(attr_count_command , (keyword))
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(attr_count_command , (keyword,))
             attr_count = cursor.fetchone()[0]
             
         #景點數目為0的錯誤
@@ -60,8 +71,8 @@ class MySQLCon:
         attr_list_command = "select * from Attraction where name like %s limit %s , %s"
         img_list_command =  "select image_url from Attr_img where img_id = %s"
         
-        with self.conn.cursor() as cursor:
-            cursor.execute(attr_list_command , (keyword , page*12 , 12) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(attr_list_command , (keyword , page*12 , 12,) )
             attr_list = cursor.fetchall()
             
         # 4.開始建構python字典 -> 之後會轉成json格式
@@ -80,8 +91,8 @@ class MySQLCon:
             box["latitude"] = attr[8]
             box["longitude"] = attr[9]
             
-            with self.conn.cursor() as cursor:
-                cursor.execute(img_list_command , (str(attr[1]) ) )
+            with self.conn.cursor(buffered=True) as cursor:
+                cursor.execute(img_list_command , (str(attr[1]), ) )
                 img_list = cursor.fetchall()
                 for img in img_list:
                     box_img.append(img[0])
@@ -101,16 +112,21 @@ class MySQLCon:
         
         data_list["data"] = data
 
+        self.conn.close()
+
         return data_list
 
     def fromIdSearchAttr(self , img_id):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         img_id_command = "select img_id from Attraction where id= %s"
         command = "select * from Attraction where img_id = %s"
         img_list_command =  "select image_url from Attr_img where img_id = %s"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(command , (img_id))
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(command , (img_id,))
             attr = cursor.fetchone()
 
         if attr == None:
@@ -132,8 +148,8 @@ class MySQLCon:
         box["latitude"] = attr[8]
         box["longitude"] = attr[9]
         
-        with self.conn.cursor() as cursor:
-            cursor.execute(img_list_command , (str(attr[1]) ) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(img_list_command , (str(attr[1]), ) )
             img_list = cursor.fetchall()
             for img in img_list:
                 box_img.append(img[0])
@@ -142,72 +158,91 @@ class MySQLCon:
         
         data_list["data"] = box
 
+        self.conn.close()
+
         return data_list
 
 class User_MySQLCon:
 
     def __init__(self , config):
         # 資料庫參數設定
-        self.db_set = config
-
-        # 建立Connection物件
-        self.conn = pymysql.connect(**self.db_set)
+        self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(**config)
 
     def tableInsertUser(self, email_address, password, username):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         #建立資料庫insert相關命令(table寫死 , 寫入 username、信箱、密碼，並做檢查機制)
 
         insert_command = ("insert into userfromweb( email_address, password, username)"
         " Values (%s , %s , %s);" )
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command , (email_address , password , username) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , (email_address , password , username,) )
             self.conn.commit()
+
+        self.conn.close()
 
     def SignUpUserCheck(self, username , email_address):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         check_username_command= "select count(username) FROM userfromweb WHERE username=%s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(check_username_command , (username) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(check_username_command , (username,) )
             self.conn.commit()
             username_check = cursor.fetchone()
 
         check_email_command = "select count(email_address) FROM userfromweb WHERE email_address=%s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(check_email_command , (email_address) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(check_email_command , (email_address,) )
             self.conn.commit()
             email_check = cursor.fetchone()
+
+        self.conn.close()
 
         return username_check , email_check
 
     def SignInUserCheck(self, email_address, password):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         check_email_command= "select count(email_address) FROM userfromweb WHERE email_address=%s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(check_email_command , (email_address) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(check_email_command , (email_address,) )
             self.conn.commit()
             email_check = cursor.fetchone()
 
         check_password_command = "select password from userfromweb where email_address=%s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute( check_password_command , (email_address) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute( check_password_command , (email_address,) )
             self.conn.commit()
             password_check = cursor.fetchone()
+
+        self.conn.close()
 
         return email_check , password_check
 
     def getUserInfor(self, email_address):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         command = "select id, email_address, username from userfromweb where email_address=%s"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(command , (email_address) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(command , (email_address,) )
             self.conn.commit()
             Info = cursor.fetchone()
+
+        self.conn.close()
 
         return Info
 
@@ -215,39 +250,49 @@ class Booking_SQL:
 
     def __init__(self , config):
         # 資料庫參數設定
-        self.db_set = config
-
-        # 建立Connection物件
-        self.conn = pymysql.connect(**self.db_set)
+        self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(**config)
 
     def tableInsertBooking(self, user_id, attraction_id, date, time, price):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         insert_command = ("insert into booking ( user_id, attraction_id, date, time, price)"
         " Values (%s , %s , %s, %s , %s);" )
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command , ( user_id, attraction_id, date, time, price) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , ( user_id, attraction_id, date, time, price,) )
             self.conn.commit()
+
+        self.conn.close()
 
     def getImgaeUrl(self, attraction_id):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         image_id_command = "select img_id from Attraction where id=%s"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(image_id_command , (attraction_id) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(image_id_command , (attraction_id,) )
             self.conn.commit()
             img_id = cursor.fetchone()
         
         image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(image_url_command , (img_id[0]) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(image_url_command , (img_id[0],) )
             self.conn.commit()
             img_url = cursor.fetchone()
+
+        self.conn.close()
         
         return img_url
         
     def getBooking(self, user_id):
+        
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
         
         #user_id, 景點id, 景點名稱, 景點地址, 預定日期, 預定時間, 預定價錢
         command = ("select userfromweb.id, Attraction.id, Attraction.name, Attraction.address, booking.date, booking.time, booking.price"
@@ -256,11 +301,12 @@ class Booking_SQL:
         " left join Attraction on booking.attraction_id = Attraction.id"
         " where booking.user_id=%s;")
         
-        with self.conn.cursor() as cursor:
-            cursor.execute(command , (user_id) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(command , (user_id,) )
             self.conn.commit()
             data = cursor.fetchall()
-            
+
+        self.conn.close()  
 
         schedule_list = []
         return_data = {}
@@ -292,73 +338,100 @@ class Booking_SQL:
         
     def deleteBooking(self, user_id, attraction_id, date, time):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         command = "delete from booking where user_id=%s and attraction_id=%s and date=%s and time=%s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(command , (user_id, attraction_id, date, time) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(command , (user_id, attraction_id, date, time,) )
             self.conn.commit()
+        
+        self.conn.close()
 
 class Order_SQL:
 
     def __init__(self , config):
         # 資料庫參數設定
-        self.db_set = config
-
-        # 建立Connection物件
-        self.conn = pymysql.connect(**self.db_set) 
+        self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(**config)
 
     def tableInsertOrder(self, userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         insert_command = ("insert into WebOrder (userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no)"
         " Values (%s, %s, %s, %s, %s, %s, %s, %s);")
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command , ( userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no) )
-            self.conn.commit()             
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , ( userID, prime, price, contact_name, contact_email, contact_phone, pay_check, pay_order_no,) )
+            self.conn.commit()   
+
+        self.conn.close()          
 
     def tableInsertOrderAttr(self, order_no, attr_id, date, time):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         insert_command = ("insert into orderAttr(order_no, attr_id, date, time)"
         " Values (%s, %s, %s, %s);")
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command, (order_no, attr_id, date, time) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command, (order_no, attr_id, date, time,) )
             self.conn.commit() 
+        
+        self.conn.close()
 
     def tableUpdate(self, order_no):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
         
         insert_command = "UPDATE WebOrder SET pay_check  = 1 WHERE pay_order_no = %s;"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(insert_command, (order_no) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command, (order_no,) )
             self.conn.commit() 
+
+        self.conn.close()
     
     def getImgaeUrl(self, attraction_id):
+        
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
 
         image_id_command = "select img_id from Attraction where id=%s"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(image_id_command , (attraction_id) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(image_id_command , (attraction_id,) )
             self.conn.commit()
             img_id = cursor.fetchone()
         
         image_url_command = "select image_url from Attr_img where img_id = %s limit 1"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(image_url_command , (img_id[0]) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(image_url_command , (img_id[0],) )
             self.conn.commit()
             img_url = cursor.fetchone()
+
+        self.conn.close()
         
         return img_url
 
     def getOrderNo(self, user_id):
 
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
         command = "select pay_order_no from WebOrder where userID = %s"
 
-        with self.conn.cursor() as cursor:
-            cursor.execute(command , (user_id) )
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(command , (user_id,) )
             self.conn.commit()
             OrderNo = cursor.fetchall()
+
+        self.conn.close()
 
         return OrderNo
 
@@ -377,10 +450,15 @@ class Order_SQL:
         
         for num in OrderNo:
             
-            with self.conn.cursor() as cursor:
-                cursor.execute(command , (num[0]))
+             # 建立Connection物件
+            self.conn = self.conn_pool.get_connection()
+            
+            with self.conn.cursor(buffered=True) as cursor:
+                cursor.execute(command , (num[0],))
                 self.conn.commit()
                 OrderDetail = cursor.fetchall()
+            
+            self.conn.close()
             
             component = {}
             component["number"] = OrderDetail[0][0]

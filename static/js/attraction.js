@@ -11,7 +11,12 @@ function init(){
     signCheck();
     BookingPage();
 
-    var requestURL = "http://52.76.36.230:3000/api/attraction/" + id;
+    let title = document.querySelector("body > div.Upperlayer > div.title");
+    title.addEventListener("click", () => {
+        window.location.href="https://wcl-travel.com/";
+    })
+    
+    var requestURL = "https://wcl-travel.com/api/attraction/" + id;
     var request = new XMLHttpRequest();
 
     request.onload = function () {
@@ -160,7 +165,7 @@ function getBooking(){
 }
 
 function SendBooking(){
-    let requestURL = "http://52.76.36.230:3000/api/booking";
+    let requestURL = "https://wcl-travel.com/api/booking";
     let request = new XMLHttpRequest();
     let data = getBooking();
     if(data){

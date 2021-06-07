@@ -51,14 +51,20 @@ function createAttrBox(img , attr_name , attr_MRT , attr_category , id){
     content.appendChild(attr_box);
     
     attr_box.addEventListener("click" , () => {
-        window.open("http://52.76.36.230:3000/attraction/"+ id);
+        window.open("https://wcl-travel.com/attraction/"+ id);
     } );
 };
 
 function init(){
     signCheck();
     BookingPage();
-    var requestURL = "http://52.76.36.230:3000/api/attractions?page=0";
+
+    let title = document.querySelector("body > div.Upperlayer > div.title");
+    title.addEventListener("click", () => {
+        window.location.href="https://wcl-travel.com/";
+    })
+    
+    var requestURL = "https://wcl-travel.com/api/attractions?page=0";
     var request = new XMLHttpRequest();
 
     request.onload = function () {
@@ -88,7 +94,7 @@ function init(){
 };
 
 function Token_verify(){
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         alert("登入成功!");
@@ -99,7 +105,7 @@ function Token_verify(){
 
 function loadPage(nextPage , keyword){
     if(nextPage != null){
-        var requestURL = "http://52.76.36.230:3000/api/attractions?page=" + nextPage + "&keyword=" + keyword;
+        var requestURL = "https://wcl-travel.com/api/attractions?page=" + nextPage + "&keyword=" + keyword;
         var request = new XMLHttpRequest();
 
         request.onload = function () {    
@@ -161,14 +167,8 @@ function getform(position){
 };
 
 function SearchAttr(){
-    let btn = document.querySelector("#search_icon");
-    window.addEventListener("submit" , function(btn){
-        btn.preventDefault();
-    });
-
-    let position = document.querySelector("#search_box");
-    let obj = getform(position);
-    console.log(obj);
+    let btn = document.querySelector("body > div.Middlelayer > div.search > div");
+    let keyword = document.querySelector("#search_input").value;
 
     let old_content = document.getElementsByClassName("content");
     for(let i = 0 ; i < old_content.length ; i++){
@@ -177,7 +177,6 @@ function SearchAttr(){
     
     check_load = null;
     
-    keyword = obj.input_keyword;
     loadPage( 0 , keyword);
     
     return false;

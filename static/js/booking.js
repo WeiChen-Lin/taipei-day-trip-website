@@ -1,6 +1,6 @@
 function init(){
     
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){
@@ -18,9 +18,24 @@ function init(){
                 let username = document.querySelector("#orderuser");
                 let username_text = document.createTextNode(json.data.name);
                 username.appendChild(username_text);
+
+                let title = document.querySelector("body > div.Upperlayer > div.title");
+                title.addEventListener("click", () => {
+                    window.location.href="https://wcl-travel.com/";
+                })
+                
+                let trip = document.querySelector("#order");
+                trip.style.display ="none";
+
+                let order = document.querySelector("#orderlist");
+                order.style.display = "block";
+                order.addEventListener("click", () => {
+                    window.location.href="https://wcl-travel.com/thankyou";
+                })
+        
             }else if(json.data == null){
                 alert("請先登入");
-                window.location.href="http://52.76.36.230:3000/";
+                window.location.href="https://wcl-travel.com/";
             }
         };
     };
@@ -31,7 +46,7 @@ function init(){
 }
 
 function getBooking(){
-    let requestURL = "http://52.76.36.230:3000/api/booking";
+    let requestURL = "https://wcl-travel.com/api/booking";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status == 200){
@@ -87,8 +102,7 @@ function createBooking(id, name, date, time, price, address, image_url, attr_tim
     ordertitle.appendChild(title);
     orderinfo.appendChild(ordertitle);
     orderinfo.appendChild(createDiv("日期：", date));
-    orderinfo.appendChild(createDiv("時間：", time));
-    orderinfo.appendChild(createDiv("價錢：", "新台幣 " + price + " 元"));
+    orderinfo.appendChild(createDiv("時間：", time));    orderinfo.appendChild(createDiv("價錢：", "新台幣 " + price + " 元"));
     orderinfo.appendChild(createDiv("地點：", address));
     orderbox.appendChild(orderinfo);
 
@@ -112,7 +126,7 @@ function createDiv(text, detail){
 }
 
 function DeleteOrder(attraction_id, date, time){
-    let requestURL = "http://52.76.36.230:3000/api/booking";
+    let requestURL = "https://wcl-travel.com/api/booking";
     let request = new XMLHttpRequest();
     let data = {}
     data.attraction_id = attraction_id;

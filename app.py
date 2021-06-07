@@ -170,7 +170,7 @@ def User():
 
             elif (email_check[0] != 0):
 
-                response = make_response( jsonify({"error":True , "message":"您輸入的電子信箱已有人使用"}) , 400)
+                response = make_response( jsonify({"error":True , "message":"Email已有人使用"}) , 400)
                 
                 response.headers["Content-Type"] = "application/json"
                 
@@ -431,8 +431,6 @@ def Order():
         
         return response
 
-
-        
 
 app.run(port=3000 , host="0.0.0.0")
 

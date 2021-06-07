@@ -1,6 +1,6 @@
 function init(){
     
-    let requestURL = "http://52.76.36.230:3000/api/user";
+    let requestURL = "https://wcl-travel.com/api/user";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if (request.status >= 200){
@@ -19,10 +19,20 @@ function init(){
                 username.appendChild(username_text);
 
                 getOrder();
+                
+                let title = document.querySelector("body > div.Upperlayer > div.title");
+                title.addEventListener("click", () => {
+                    window.location.href="https://wcl-travel.com/";
+                })
+
+                let trip = document.querySelector("#order");
+                trip.addEventListener("click", () => {
+                    window.open("https://wcl-travel.com/booking");
+                })
 
             }else if(json.data == null){
                 alert("請先登入");
-                window.location.href="http://52.76.36.230:3000/";
+                window.location.href="https://wcl-travel.com/";
             }
         };
     };
@@ -33,7 +43,7 @@ function init(){
 }
 
 function getOrder(){
-    let requestURL = "http://52.76.36.230:3000/api/orders";
+    let requestURL = "https://wcl-travel.com/api/orders";
     let request = new XMLHttpRequest();
     request.onload = function(){
         if(request.status == 200){
@@ -48,7 +58,7 @@ function getOrder(){
             }
         }else if(request.status >= 400){
             alert("請先登入");
-            window.location.href="http://52.76.36.230:3000/";
+            window.location.href="https://wcl-travel.com";
         }
     };
     request.open("GET" ,requestURL ,true);
