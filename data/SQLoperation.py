@@ -490,5 +490,60 @@ class Order_SQL:
         data["data"] = orderinfo
 
         return data
+
+class RDS_SQL:
+
+    def __init__(self , config):
+        # 資料庫參數設定
+        self.conn_pool = mysql.connector.pooling.MySQLConnectionPool(**config)
         
+    def tableInsertUrl(self, mode, date, url):
+        
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
+        #建立資料庫insert相關命令(table寫死 , 寫入id, name, category, description, address, transport, MRT, latitude, longtitude)
+
+        insert_command = ("insert into imgurl(mode, date, url) Values (%s , %s , %s);" ) 
+        
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command , (mode, date, url))
+            self.conn.commit()
+
+        self.conn.close()
+
+    def getAll(self):
+
+        # 建立Connection物件
+        self.conn = self.conn_pool.get_connection()
+
+        #建立資料庫insert相關命令(table寫死 , 寫入id, name, category, description, address, transport, MRT, latitude, longtitude)
+
+        insert_command = "select * from imgurl;" 
+        return_data = {}
+        data_list = []
+        with self.conn.cursor(buffered=True) as cursor:
+            cursor.execute(insert_command)
+            self.conn.commit()
+            data = cursor.fetchall()
+            
+            if data:
+                for ele in data:
+                    ele_dic = {}
+                    ele_dic["date"] = ele[1]
+                    ele_dic["url"] = ele[2]
+                    ele_dic["mode"] = ele[3]
+                    data_list.append(ele_dic)
+                
+                return_data["data"] = data_list
+
+            else:
+                return_data["data"] = None
+
+                   
+        
+        self.conn.close()
+
+        return return_data
+
         

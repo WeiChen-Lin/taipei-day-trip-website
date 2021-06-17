@@ -3,7 +3,8 @@ import sys , json, jwt, datetime, time
 sys.path.append("./data")
 
 from GetTapPay import *
-from SQLoperation import MySQLCon, User_MySQLCon, Booking_SQL, Order_SQL
+from SQLoperation import MySQLCon, User_MySQLCon, Booking_SQL, Order_SQL, RDS_SQL
+from s3DataStorage import uploadFile
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -16,13 +17,24 @@ sqlConfig = {
     "db" : config["db"],
     "charset" : config["charset"]
 }
-
+s3Config = {
+    "aws_access_key_id":config["aws_access_key_id"],
+    "aws_secret_access_key":config["aws_secret_access_key"]
+}
+RDSConfig = {
+    "host" : config["rds_host"],
+    "user" : config["rds_user"],
+    "password" : config["password"],
+    "db" : config["rds_db"],
+}
 partner_key = config["partner_key"]
 
 sqlObject = MySQLCon(sqlConfig)
 UsersqlObject = User_MySQLCon(sqlConfig)
 bookingsqlObject = Booking_SQL(sqlConfig)
 ordersqlObject = Order_SQL(sqlConfig)
+s3Object = uploadFile(s3Config)
+RDSObject = RDS_SQL(RDSConfig)
 app=Flask(__name__) 
 
 app.config["JSON_AS_ASCII"]=False
@@ -431,6 +443,48 @@ def Order():
         
         return response
 
+@app.route("/api/uploads", methods=["POST", "GET"])
+def uploadtoflask():
 
-app.run(port=3000 , host="0.0.0.0")
+    if request.method == 'POST':
+
+        file = request.files["uploadimgtest"]
+        mimetype = file.mimetype
+        filename = file.filename
+        
+        url = s3Object.returnURL(file, mimetype, filename)
+        mode_text = request.form.get("text")
+        date = request.form.get("time")
+        print(date)
+        RDSObject.tableInsertUrl(mode_text, date, url)
+
+        response = make_response( jsonify({"data":{"date":date, "mode":mode_text, "url":url}}), 200)
+
+        response.headers["Content-Type"] = "application/json"
+        
+
+        return response
+
+    elif request.method == "GET":
+
+        data = RDSObject.getAll()
+
+        response = make_response( jsonify(data), 200)
+
+        response.headers["Content-Type"] = "application/json"
+        
+
+        return response 
+    
+    else:
+        return "not ok" , 500
+
+@app.route("/upload")
+def upload():
+
+    return render_template("upload.html")
+
+
+
+app.run(port=3000 , host="127.0.0.1", debug=True)
 

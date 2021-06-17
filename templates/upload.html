@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/repo_upload.css') }} " type="text/css">
+    <title>上傳圖片</title>
+</head>
+<body onload=init();>
+    <div class="upload">
+        <div class="uploadtext">
+            <label for="uploadtext">填入想抒發的心情</label>
+            <textarea name="uploadtext" cols="30" rows="10"></textarea>
+        </div>
+        <div class="uploadimg">
+            <div class="imgbutton">
+                <label for="imgup">請選擇欲上傳圖片</label>
+                <input type="file" name="uploadimgtest">
+            </div>
+            <div class="view">
+                <div class="viewtext">預覽圖片</div>
+                <div class="viewimg">
+                    <img src="" alt="">
+                </div>
+            </div>
+            <div class="submitbut"><button>送出圖文</button></div>
+        </div>
+        <div></div>
+    </div>
+    <div class="diarary">
+        
+    </div>
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+</body>
+</html>
